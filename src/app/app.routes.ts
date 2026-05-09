@@ -1,17 +1,33 @@
 import { Routes } from '@angular/router';
+import { AllCurrencyViewPage } from './view/all-currency-view/all-currency-view.page';
+import { HomePage } from './layout/home/home.page';
+import { LoginPage } from './layout/login/login.page';
 
 export const routes: Routes = [
-  {
-    path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
-  },
   {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
   },
   {
+    path: 'home',
+    component: HomePage,
+    children: [
+      {
+        path: 'all-currency-view',
+        component: AllCurrencyViewPage,
+      },
+    ],
+  },
+  {
     path: 'login',
-    loadComponent: () => import('./view/login/login.page').then( m => m.LoginPage)
+    component: LoginPage,
+  },
+  {
+    path: 'all-currency-view',
+    loadComponent: () =>
+      import('./view/all-currency-view/all-currency-view.page').then(
+        (m) => m.AllCurrencyViewPage,
+      ),
   },
 ];

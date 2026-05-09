@@ -13,8 +13,9 @@ import {
   IonText,
   IonSelectOption,
   IonSelect,
+  IonRouterOutlet,
 } from '@ionic/angular/standalone';
-import { HttpClientService } from '../service/http-client';
+import { HttpClientService } from '../../service/http-client';
 import { Router } from '@angular/router';
 import { ICurrencyByDate, IResults } from 'src/types/results';
 
@@ -36,6 +37,7 @@ import { ICurrencyByDate, IResults } from 'src/types/results';
     IonMenu,
     IonMenuButton,
     IonSelectOption,
+    IonRouterOutlet,
   ],
 })
 export class HomePage {
@@ -51,6 +53,10 @@ export class HomePage {
   loginRoute() {
     this.router.navigate(['/login']);
     console.log('loginROuter');
+  }
+
+  direccionarACurrency() {
+    this.router.navigate(['/all-currency-view']);
   }
 
   getData() {
