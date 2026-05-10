@@ -1,3 +1,8 @@
+export type IDivisas = {
+  status: number;
+  results: IResults[];
+};
+
 export type IResults = {
   id: number;
   codigo: string;
@@ -9,13 +14,20 @@ export type IResults = {
 //   username: string;
 // };
 
+export type ICotizaciones = {
+  status: number;
+  results: ICurrencyByDate;
+};
+
 export type ICurrencyByDate = {
   id: number;
   fecha: string;
-  detalle: {
-    codigoMoneda: string;
-    descripcion: string;
-    tipoPase: number;
-    tipoCotizacion: number;
-  };
+  detalle: IDetalle[];
+};
+
+export type IDetalle = {
+  codigoMoneda: string;
+  descripcion: string;
+  tipoPase: number;
+  tipoCotizacion: number;
 };

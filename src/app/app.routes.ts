@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AllCurrencyViewPage } from './view/all-currency-view/all-currency-view.page';
 import { HomePage } from './layout/home/home.page';
 import { LoginPage } from './layout/login/login.page';
+import { CurrencyPage } from './currency/currency.page';
 
 export const routes: Routes = [
   {
@@ -30,4 +31,9 @@ export const routes: Routes = [
         (m) => m.AllCurrencyViewPage,
       ),
   },
+  {
+    path: 'currency',
+    loadComponent: () => import('./currency/currency.page').then( m => m.CurrencyPage)
+  },
+
 ];

@@ -56,7 +56,7 @@ export class HomePage {
   }
 
   direccionarACurrency() {
-    this.router.navigate(['/all-currency-view']);
+    this.router.navigate(['/currency']);
   }
 
   getData() {
@@ -74,6 +74,7 @@ export class HomePage {
     });
   }
 
+  /*
   getCurrencyByDate() {
     this.proveedorService.getCurrencyByDate().subscribe({
       next: (data: any) => {
@@ -88,6 +89,7 @@ export class HomePage {
       },
     });
   }
+    */
 
   ngOnInit() {
     // this.getData();
