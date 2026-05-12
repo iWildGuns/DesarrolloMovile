@@ -1,29 +1,42 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Auth, signInWithPopup, GoogleAuthProvider } from '@angular/fire/auth';
-import { signInWithEmailAndPassword } from '@angular/fire/auth';
+import { CommonModule } from '@angular/common';
+import {
+  Auth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+} from '@angular/fire/auth';
 
-// import { AuthService } from '../services/auth.service'; // descomentá cuando tengas tu servicio
-
+/**
+ * Página de Login
+ * Autenticación con email/contraseña y Google
+ */
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
 })
 export class LoginPage {
+  // ============ PROPIEDADES ============
   loginForm: FormGroup;
-  showPassword = false;
-  loading = false;
-  serverError = '';
+  showPassword: boolean = false;
+  loading: boolean = false;
+  serverError: string = '';
 
+  // ============ CONSTRUCTOR ============
   constructor(
     private auth: Auth,
     private fb: FormBuilder,
     private router: Router,
-    // private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -31,38 +44,69 @@ export class LoginPage {
     });
   }
 
+  // ============ GETTERS ============
+  /**
+   * Valida si el campo email es inválido
+   */
   get emailInvalid(): boolean {
-    const c = this.loginForm.get('email');
-    return !!(c?.invalid && c?.touched);
+    const control = this.loginForm.get('email');
+    return !!(control?.invalid && control?.touched);
   }
 
+  /**
+   * Valida si el campo contraseña es inválido
+   */
   get passwordInvalid(): boolean {
-    const c = this.loginForm.get('password');
-    return !!(c?.invalid && c?.touched);
+    const control = this.loginForm.get('password');
+    return !!(control?.invalid && control?.touched);
   }
 
+  // ============ MÉTODOS ============
+  /**
+   * Alterna la visibilidad de la contraseña
+   */
   togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
 
+  /**
+   * Envía el formulario de login con email y contraseña
+   */
   onSubmit(): void {
+    if (this.loginForm.invalid) return;
+
+    this.loading = true;
     const { email, password } = this.loginForm.value;
+
     signInWithEmailAndPassword(this.auth, email, password)
-      .then(() => this.router.navigate(['/home']))
-      .catch((err) => (this.serverError = err.message));
+      .then(() => {
+        this.router.navigate(['/home']);
+        this.loading = false;
+      })
+      .catch((err) => {
+        this.serverError = err.message;
+        this.loading = false;
+      });
   }
 
+  /**
+   * Login con Google
+   */
   async loginWithGoogle(): Promise<void> {
     try {
+      this.loading = true;
       await signInWithPopup(this.auth, new GoogleAuthProvider());
       this.router.navigate(['/home']);
     } catch (err: any) {
       this.serverError = err.message;
+      this.loading = false;
     }
   }
 
+  /**
+   * Login con GitHub (en desarrollo)
+   */
   loginWithGithub(): void {
-    // this.authService.loginWithGithub();
-    console.log('Login con GitHub');
+    console.log('Login con GitHub - En desarrollo');
   }
 }

@@ -1,29 +1,37 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IDivisa, IResults } from 'src/types';
+import { Observable } from 'rxjs';
+import { IDivisas, ICotizaciones } from 'src/types';
 
+/**
+ * Servicio HTTP para comunicarse con la API del BCRA
+ * Maneja todas las peticiones relacionadas con divisas y cotizaciones
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class HttpClientService {
-  public url: string = 'https://api.bcra.gob.ar/estadisticascambiarias/v1.0';
+  private readonly API_URL =
+    'https://api.bcra.gob.ar/estadisticascambiarias/v1.0';
 
-  constructor(public httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {}
 
-  getDivisa() {
-    const data = this.httpClient.get<IResults>(`${this.url}/Maestros/Divisas`);
-    return data;
+  getDivisa(): Observable<IDivisas> {
+    return this.httpClient.get<IDivisas>(`${this.API_URL}/Maestros/Divisas`);
   }
 
-  getCurrencyByDate() {
-    const data = this.httpClient.get<IResults>(
-      `${this.url}/Cotizaciones?fecha=2024-06-12`,
+  /**
+   * Obtiene las cotizaciones de una fecha específica
+   * @param date Fecha en formato YYYY-MM-DD
+   */
+
+  getCurrencyByDate(date: string): Observable<ICotizaciones> {
+    return this.httpClient.get<ICotizaciones>(
+      `${this.API_URL}/Cotizaciones?fecha=${date}`,
     );
-    return data;
   }
 
-  getAllCurrencyDetails() {
-    const data = this.httpClient.get<IResults>(`${this.url}/Cotizaciones`);
-    return data;
+  getAllCurrencyDetails(): Observable<ICotizaciones> {
+    return this.httpClient.get<ICotizaciones>(`${this.API_URL}/Cotizaciones`);
   }
 }

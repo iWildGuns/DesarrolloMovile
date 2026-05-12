@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cotizaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Fecha -->
+  <ion-item>
+    <ion-label>Fecha</ion-label>
+
+    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+  </ion-item>
+
+  <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+      <ion-datetime
+        id="datetime"
+        presentation="date"
+        [value]="selectedDate"
+        (ionChange)="changeDate($event)"
+      >
+      </ion-datetime>
+    </ng-template>
+  </ion-modal>
+
+    <!-- Resultado -->
+  <ion-card *ngIf="quotation">
+    <ion-card-header>
+      <ion-card-title>
+        {{ selectedCurrency?.codigo }}
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <h2>Compra: {{ quotation.tipoCotizacion }}</h2>
+
+      <h1>{{ quotation.tipoPase }}</h1>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Mensaje -->
+  <ion-text color="danger" *ngIf="errorMessage">
+    <p class="ion-padding-top">
+      {{ errorMessage }}
+    </p>
+  </ion-text>
+
+  <!-- Buscador -->
+  <ion-searchbar
+    placeholder="Buscar moneda"
+    [(ngModel)]="searchTerm"
+    (ionInput)="filterCurrencies($event)"
+  >
+  </ion-searchbar>
+
+    <!-- Lista de monedas -->
+  <ion-list>
+    <ion-item
+      button
+      *ngFor="let currency of filteredCurrencies"
+      (click)="selectCurrency(currency)"
+    >
+      {{ currency.codigo }} - {{ currency.denominacion }}
+    </ion-item>
+  </ion-list>
+
+</ion-content>

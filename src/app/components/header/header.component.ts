@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -8,19 +8,28 @@ import {
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 
+/**
+ * Componente Header
+ * Encabezado de la aplicación con acceso al menú principal
+ */
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   imports: [IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
+  // ============ PROPIEDADES ============
   @Input() menuId: string = 'main-menu';
+
+  // ============ CONSTRUCTOR ============
   constructor(private router: Router) {}
 
-  goHome() {
+  // ============ MÉTODOS ============
+  /**
+   * Navega a la página de inicio
+   */
+  goHome(): void {
     this.router.navigate(['home']);
   }
-
-  ngOnInit() {}
 }

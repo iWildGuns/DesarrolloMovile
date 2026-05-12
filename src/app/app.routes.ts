@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
-import { AllCurrencyViewPage } from './view/all-currency-view/all-currency-view.page';
 import { HomePage } from './view/home/home.page';
 import { LoginPage } from './layout/login/login.page';
 import { LayoutComponent } from './layout/layout/layout.component';
+import { AllCurrencyViewPage } from './view/all-currency-view/all-currency-view.page';
+import { CurrencyPage } from './view/currency/currency.page';
 
 export const routes: Routes = [
   {
@@ -19,6 +20,7 @@ export const routes: Routes = [
     component: LayoutComponent,
     children: [
       { path: 'home', component: HomePage },
+      { path: 'currency', component: CurrencyPage },
       {
         path: 'all-currency-view',
         component: AllCurrencyViewPage,

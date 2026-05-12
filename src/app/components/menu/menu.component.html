@@ -4,10 +4,10 @@
       <ion-title>Menu Content</ion-title>
     </ion-toolbar>
     <ion-list>
-      <ion-item (click)="direccionarACurrency()">
+      <ion-item (click)="navegarACotizaciones()">
         <ion-label>Cotizacion de moneda</ion-label>
       </ion-item>
-      <ion-item>
+      <ion-item (click)="navegarADivisas()">
         <ion-label>Todas las currencys el dia de hoy</ion-label>
       </ion-item>
       <ion-item>
@@ -21,24 +21,9 @@
       </ion-item>
     </ion-list>
   </div>
-  <ion-list (click)="loginRoute()">
+  <ion-list (click)="navegarALogin()">
     <ion-item>
       <ion-label>Iniciar sesion</ion-label>
     </ion-item>
   </ion-list>
 </ion-menu>
-
-<!-- <div class="ion-page" id="main-content">
-
-  </div> -->
-
-<!-- @if (mostrar) {
-    @for (divisa of divisas; track divisa.id) {
-      <ion-list>
-        <ion-item>
-          <ion-label>{{ divisa.codigo }}</ion-label>
-          <p>{{ divisa.denominacion }}</p>
-        </ion-item>
-      </ion-list>
-    }
-  } -->
