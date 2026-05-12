@@ -1,9 +1,5 @@
 import { Routes } from '@angular/router';
-import { HomePage } from './view/home/home.page';
-import { LoginPage } from './layout/login/login.page';
 import { LayoutComponent } from './layout/layout/layout.component';
-import { AllCurrencyViewPage } from './view/all-currency-view/all-currency-view.page';
-import { CurrencyPage } from './view/currency/currency.page';
 
 export const routes: Routes = [
   {
@@ -12,18 +8,37 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'login',
-    component: LoginPage,
+    path: 'sign-in',
+    loadComponent: () =>
+      import('./layout/login/sign-in/sign-in.page').then((m) => m.SignInPage),
+  },
+  {
+    path: 'sign-up',
+    loadComponent: () =>
+      import('./layout/login/sign-up/sign-up.page').then((m) => m.SignUpPage),
   },
   {
     path: '',
     component: LayoutComponent,
     children: [
-      { path: 'home', component: HomePage },
-      { path: 'currency', component: CurrencyPage },
+      {
+        path: 'home',
+        loadComponent: () =>
+          import('../app/view/home/home.page').then((m) => m.HomePage),
+      },
+      {
+        path: 'currency',
+        loadComponent: () =>
+          import('../app/view/currency/currency.page').then(
+            (m) => m.CurrencyPage,
+          ),
+      },
       {
         path: 'all-currency-view',
-        component: AllCurrencyViewPage,
+        loadComponent: () =>
+          import('../app/view/all-currency-view/all-currency-view.page').then(
+            (m) => m.AllCurrencyViewPage,
+          ),
       },
     ],
   },

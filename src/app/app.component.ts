@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet, IonContent } from '@ionic/angular/standalone';
 import { MenuComponent } from './components/menu/menu.component';
 
+//const app = initializeApp(firebaseConfig);
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',

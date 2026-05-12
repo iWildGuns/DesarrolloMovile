@@ -2,6 +2,8 @@
  * Tipos principales de la aplicación
  */
 
+import { FormControl } from '@angular/forms';
+
 // Tipos de Divisas
 export type IDivisa = {
   id?: number;
@@ -44,4 +46,13 @@ export type IDetalle = {
   descripcion: string;
   tipoPase: number;
   tipoCotizacion: number;
+};
+
+/** Users */
+
+export type SignUpForm = {
+  name: FormControl<string | null>;
+  lastName: FormControl<string | null>;
+  email: FormControl<string | null>;
+  password: FormControl<string | null>;
 };
