@@ -1,0 +1,68 @@
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <div class="login-header">
+      <ion-icon name="person-circle-outline" class="login-icon"></ion-icon>
+      <h1>Bienvenido</h1>
+      <p>Iniciá sesión para continuar</p>
+    </div>
+
+    <!-- Formulario -->
+    <div class="login-form">
+      <ion-item lines="outline" class="login-item">
+        <ion-input
+          type="email"
+          [(ngModel)]="email"
+          label="Email"
+          labelPlacement="floating"
+          placeholder="tucorreo@ejemplo.com"
+        >
+        </ion-input>
+      </ion-item>
+
+      <ion-item lines="outline" class="login-item">
+        <ion-input
+          type="password"
+          [(ngModel)]="password"
+          label="Contraseña"
+          labelPlacement="floating"
+          placeholder="••••••••"
+        >
+        </ion-input>
+      </ion-item>
+
+      <div class="forgot-password">
+        <ion-text color="primary">
+          <a (click)="forgotPassword()">¿Olvidaste tu contraseña?</a>
+        </ion-text>
+      </div>
+
+      <ion-button expand="block" (click)="login()" class="login-btn">
+        Iniciar Sesión
+      </ion-button>
+
+      <!-- Separador -->
+      <div class="divider">
+        <span>o continuá con</span>
+      </div>
+
+      <!-- Botón Google -->
+      <ion-button
+        expand="block"
+        fill="outline"
+        (click)="loginWithGoogle()"
+        class="google-btn"
+      >
+        <ion-icon slot="start" name="logo-google"></ion-icon>
+        Continuar con Google
+      </ion-button>
+
+      <!-- Link Registrarse -->
+      <div class="register-link">
+        <ion-text>¿No tenés cuenta? </ion-text>
+        <ion-text color="primary">
+          <a (click)="goToRegister()" style="cursor: pointer">Registrate</a>
+        </ion-text>
+      </div>
+    </div>
+  </div>
+</ion-content>
