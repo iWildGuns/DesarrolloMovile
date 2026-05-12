@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomePage } from './view/home/home.page';
 import { LoginPage } from './layout/login/login.page';
-import { LayoutComponent } from './layout/layout/layout.component';
+import { LayoutComponent } from './layout/appLayout/layout.component';
 import { AllCurrencyViewPage } from './view/all-currency-view/all-currency-view.page';
 import { CurrencyPage } from './view/currency/currency.page';
 
