@@ -2,10 +2,6 @@ import { Component } from '@angular/core';
 import { IonRouterOutlet, IonContent } from '@ionic/angular/standalone';
 import { HeaderComponent } from 'src/app/components/header/header.component';
 
-/**
- * Componente Layout
- * Estructura principal de la aplicación con header y contenido
- */
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',

@@ -14,7 +14,6 @@ import { routes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: 'AIzaSyAj9G9OFb1lNUhxW2GJnHs-oE5yPnxWhjE',
   authDomain: 'movileproject-e2ee6.firebaseapp.com',

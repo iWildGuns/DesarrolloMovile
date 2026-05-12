@@ -1,7 +1,3 @@
-/**
- * Tipos principales de la aplicación
- */
-
 // Tipos de Divisas
 export type IDivisa = {
   id?: number;

@@ -8,10 +8,6 @@ import {
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 
-/**
- * Componente Header
- * Encabezado de la aplicación con acceso al menú principal
- */
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -19,16 +15,9 @@ import { Router } from '@angular/router';
   imports: [IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton],
 })
 export class HeaderComponent {
-  // ============ PROPIEDADES ============
   @Input() menuId: string = 'main-menu';
-
-  // ============ CONSTRUCTOR ============
   constructor(private router: Router) {}
 
-  // ============ MÉTODOS ============
-  /**
-   * Navega a la página de inicio
-   */
   goHome(): void {
     this.router.navigate(['home']);
   }

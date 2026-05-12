@@ -1,10 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  AbstractControl,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -15,10 +10,6 @@ import {
   signInWithEmailAndPassword,
 } from '@angular/fire/auth';
 
-/**
- * Página de Login
- * Autenticación con email/contraseña y Google
- */
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -26,13 +17,11 @@ import {
   imports: [ReactiveFormsModule, CommonModule],
 })
 export class LoginPage {
-  // ============ PROPIEDADES ============
   loginForm: FormGroup;
   showPassword: boolean = false;
   loading: boolean = false;
   serverError: string = '';
 
-  // ============ CONSTRUCTOR ============
   constructor(
     private auth: Auth,
     private fb: FormBuilder,
@@ -44,34 +33,20 @@ export class LoginPage {
     });
   }
 
-  // ============ GETTERS ============
-  /**
-   * Valida si el campo email es inválido
-   */
   get emailInvalid(): boolean {
     const control = this.loginForm.get('email');
     return !!(control?.invalid && control?.touched);
   }
 
-  /**
-   * Valida si el campo contraseña es inválido
-   */
   get passwordInvalid(): boolean {
     const control = this.loginForm.get('password');
     return !!(control?.invalid && control?.touched);
   }
 
-  // ============ MÉTODOS ============
-  /**
-   * Alterna la visibilidad de la contraseña
-   */
   togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
 
-  /**
-   * Envía el formulario de login con email y contraseña
-   */
   onSubmit(): void {
     if (this.loginForm.invalid) return;
 
@@ -89,9 +64,6 @@ export class LoginPage {
       });
   }
 
-  /**
-   * Login con Google
-   */
   async loginWithGoogle(): Promise<void> {
     try {
       this.loading = true;
@@ -103,9 +75,6 @@ export class LoginPage {
     }
   }
 
-  /**
-   * Login con GitHub (en desarrollo)
-   */
   loginWithGithub(): void {
     console.log('Login con GitHub - En desarrollo');
   }
