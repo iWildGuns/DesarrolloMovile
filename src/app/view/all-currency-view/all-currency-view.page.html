@@ -1,11 +1,57 @@
-<div>
-  <ion-toolbar>
-    <ion-title>AllCurrencyView</ion-title>
-  </ion-toolbar>
+<ion-content>
+  <div class="header-row">
+    <p class="section-title">Divisas disponibles</p>
+    <span class="fecha-tag">
+      <ion-icon name="calendar-outline"></ion-icon>
+      {{ results?.fecha }}
+    </span>
+  </div>
 
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">AllCurrencyView</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <p class="stat-label">Total divisas</p>
+      <p class="stat-value">{{ results?.detalle?.length }}</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Con cotización</p>
+      <p class="stat-value">{{ conCotizacion }}</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Sin cotización</p>
+      <p class="stat-value">{{ sinCotizacion }}</p>
+    </div>
+  </div>
+
+  <ion-searchbar
+    [(ngModel)]="searchTerm"
+    placeholder="Buscar por código o descripción..."
+    (ionInput)="filtrar()"
+  >
+  </ion-searchbar>
+
+  <div class="divisa-grid">
+    @for(divisa of divisasFiltradas; track divisa.id) {
+    <ion-card class="divisa-card">
+      <ion-card-content>
+        <span class="divisa-badge">{{ divisa.codigoMoneda }}</span>
+        <p class="divisa-name">{{ divisa.descripcion }}</p>
+        <div class="divisa-values">
+          <div class="divisa-row">
+            <span class="divisa-label">Tipo pase</span>
+            <span class="divisa-value"
+              >{{ divisa.tipoPase | number:'1.4-4' }}</span
+            >
+          </div>
+          <div class="divisa-row">
+            <span class="divisa-label">Cotización</span>
+            <span class="divisa-value">
+              {{ divisa.tipoCotizacion > 0 ? (divisa.tipoCotizacion |
+              number:'1.2-2') : '—' }}
+            </span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    }
+  </div>
+</ion-content>

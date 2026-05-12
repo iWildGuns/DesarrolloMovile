@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ICurrencyByDate, IResults } from 'src/types/results';
+import { IDivisa, IResults } from 'src/types';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +16,14 @@ export class HttpClientService {
   }
 
   getCurrencyByDate() {
-    const data = this.httpClient.get<ICurrencyByDate>(
+    const data = this.httpClient.get<IResults>(
       `${this.url}/Cotizaciones?fecha=2024-06-12`,
     );
+    return data;
+  }
+
+  getAllCurrencyDetails() {
+    const data = this.httpClient.get<IResults>(`${this.url}/Cotizaciones`);
     return data;
   }
 }
