@@ -29,5 +29,9 @@ export const routes: Routes = [
       import('./view/all-currency-view/all-currency-view.page').then(
         (m) => m.AllCurrencyViewPage,
       ),
+  },  {
+    path: 'currencies-between-dates',
+    loadComponent: () => import('./view/currencies-between-dates/currencies-between-dates.page').then( m => m.CurrenciesBetweenDatesPage)
   },
+
 ];

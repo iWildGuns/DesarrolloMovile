@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ICurrencyByDate, IResults } from 'src/types/results';
 
 @Injectable({
@@ -21,4 +21,13 @@ export class HttpClientService {
     );
     return data;
   }
+  getCurrenciesBetweenDate(moneda: string, fechaDesde: string, fechaHasta: string) {
+  const url =
+    `${this.url}/Cotizaciones/${moneda}?fechadesde=${fechaDesde}&fechahasta=${fechaHasta}`;
+
+  const data = this.httpClient.get<ICurrencyByDate>(url);
+
+  console.log(url); 
+  return data;
+}
 }
