@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IDivisas, ICotizaciones } from 'src/types';
+import { ICurrencyByDate, IResults } from 'src/types/index';
 
 /**
  * Servicio HTTP para comunicarse con la API del BCRA
@@ -34,4 +35,13 @@ export class HttpClientService {
   getAllCurrencyDetails(): Observable<ICotizaciones> {
     return this.httpClient.get<ICotizaciones>(`${this.API_URL}/Cotizaciones`);
   }
+  getCurrenciesBetweenDate(moneda: string, fechaDesde: string, fechaHasta: string) {
+  const url =
+    `${this.API_URL}/Cotizaciones/${moneda}?fechadesde=${fechaDesde}&fechahasta=${fechaHasta}`;
+
+  const data = this.httpClient.get<ICurrencyByDate>(url);
+
+  console.log(url); 
+  return data;
+}
 }
