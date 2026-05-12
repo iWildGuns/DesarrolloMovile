@@ -40,6 +40,11 @@ export class MenuComponent {
     this.cerrarMenu();
   }
 
+  navegarBetweenDate(): void {
+    this.router.navigate(['/currency-between-date']);
+    this.cerrarMenu();
+  }
+
   private cerrarMenu(): void {
     this.menuController.close(this.menuId);
   }

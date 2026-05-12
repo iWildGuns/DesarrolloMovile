@@ -5,8 +5,6 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
-  <!-- Fecha -->
   <ion-item>
     <ion-label>Fecha</ion-label>
 
@@ -25,12 +23,9 @@
     </ng-template>
   </ion-modal>
 
-    <!-- Resultado -->
   <ion-card *ngIf="quotation">
     <ion-card-header>
-      <ion-card-title>
-        {{ selectedCurrency?.codigo }}
-      </ion-card-title>
+      <ion-card-title> {{ selectedCurrency?.codigo }} </ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
@@ -40,14 +35,10 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Mensaje -->
   <ion-text color="danger" *ngIf="errorMessage">
-    <p class="ion-padding-top">
-      {{ errorMessage }}
-    </p>
+    <p class="ion-padding-top">{{ errorMessage }}</p>
   </ion-text>
 
-  <!-- Buscador -->
   <ion-searchbar
     placeholder="Buscar moneda"
     [(ngModel)]="searchTerm"
@@ -55,7 +46,6 @@
   >
   </ion-searchbar>
 
-    <!-- Lista de monedas -->
   <ion-list>
     <ion-item
       button
@@ -65,5 +55,4 @@
       {{ currency.codigo }} - {{ currency.denominacion }}
     </ion-item>
   </ion-list>
-
 </ion-content>

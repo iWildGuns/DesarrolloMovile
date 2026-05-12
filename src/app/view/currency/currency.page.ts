@@ -15,7 +15,6 @@ import { takeUntil } from 'rxjs/operators';
   imports: [IonicModule, CommonModule, FormsModule],
 })
 export class CurrencyPage implements OnInit, OnDestroy {
-  // ============ PROPIEDADES ============
   currencies: IResults[] = [];
   filteredCurrencies: IResults[] = [];
   selectedCurrency: IResults | undefined = undefined;
@@ -27,10 +26,8 @@ export class CurrencyPage implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  // ============ CONSTRUCTOR ============
   constructor(private httpService: HttpClientService) {}
 
-  // ============ LIFECYCLE ============
   ngOnInit(): void {
     this.loadCurrencies();
   }
@@ -40,10 +37,6 @@ export class CurrencyPage implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  // ============ MÉTODOS PRINCIPALES ============
-  /**
-   * Carga la lista de divisas disponibles desde la API
-   */
   private loadCurrencies(): void {
     this.httpService
       .getDivisa()
@@ -54,9 +47,6 @@ export class CurrencyPage implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   * Carga la cotización para la divisa y fecha seleccionada
-   */
   private loadQuotation(): void {
     if (!this.selectedCurrency) return;
 
@@ -74,10 +64,6 @@ export class CurrencyPage implements OnInit, OnDestroy {
       });
   }
 
-  // ============ MANEJADORES DE EVENTOS ============
-  /**
-   * Filtra las divisas basado en el término de búsqueda
-   */
   filterCurrencies(event: any): void {
     const value = event.target.value.toLowerCase();
     this.filteredCurrencies = this.currencies.filter((currency) =>
@@ -85,26 +71,16 @@ export class CurrencyPage implements OnInit, OnDestroy {
     );
   }
 
-  /**
-   * Selecciona una divisa y carga su cotización
-   */
   selectCurrency(currency: IResults): void {
     this.selectedCurrency = currency;
     this.loadQuotation();
   }
 
-  /**
-   * Cambia la fecha seleccionada y recarga la cotización
-   */
   changeDate(event: any): void {
     this.selectedDate = event.detail.value;
     this.loadQuotation();
   }
 
-  // ============ MÉTODOS AUXILIARES ============
-  /**
-   * Obtiene la fecha local en formato ISO
-   */
   private getLocalDate(): string {
     const date = new Date();
     const offset = date.getTimezoneOffset();
@@ -112,14 +88,10 @@ export class CurrencyPage implements OnInit, OnDestroy {
     return localDate.toISOString();
   }
 
-  /**
-   * Maneja la respuesta de divisas
-   */
   private handleCurrenciesResponse(resp: any): void {
     this.currencies = resp.results;
     this.filteredCurrencies = this.currencies;
 
-    // Selecciona USD por defecto
     this.selectedCurrency = this.currencies.find((c) =>
       c.codigo?.toLowerCase().includes('usd'),
     );
@@ -127,13 +99,9 @@ export class CurrencyPage implements OnInit, OnDestroy {
     this.loadQuotation();
   }
 
-  /**
-   * Maneja la respuesta de cotizaciones
-   */
   private handleQuotationResponse(resp: any): void {
     this.errorMessage = '';
 
-    // Valida datos
     if (!resp.results?.fecha || !resp.results?.detalle?.length) {
       this.quotation = undefined;
       this.errorMessage =
@@ -141,7 +109,6 @@ export class CurrencyPage implements OnInit, OnDestroy {
       return;
     }
 
-    // Busca la moneda seleccionada
     const currencyFound = resp.results.detalle.find(
       (c: IDetalle) => c.codigoMoneda === this.selectedCurrency?.codigo,
     );
@@ -156,9 +123,6 @@ export class CurrencyPage implements OnInit, OnDestroy {
     this.quotation = currencyFound;
   }
 
-  /**
-   * Maneja errores comunes
-   */
   private handleError(message: string): void {
     this.quotation = undefined;
     this.errorMessage = message;
