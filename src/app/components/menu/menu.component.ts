@@ -52,7 +52,7 @@ export class MenuComponent {
    * Navega a la página de login
    */
   navegarALogin(): void {
-    this.router.navigate(['login']);
+    this.router.navigate(['/sign-in']);
     this.cerrarMenu();
   }
 
