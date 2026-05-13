@@ -3,7 +3,7 @@
     <div class="login-header">
       <ion-icon name="person-circle-outline" class="login-icon"></ion-icon>
       <h1>Bienvenido</h1>
-      <p>Iniciá sesión para continuar</p>
+      <p>Registrate para continuar</p>
     </div>
 
     <!-- Formulario -->
@@ -46,13 +46,8 @@
         <button (click)="hide = !hide"></button>
       </ion-item>
     </form>
-    <div class="forgot-password">
-      <ion-text color="primary">
-        <a (click)="forgotPassword()">¿Olvidaste tu contraseña?</a>
-      </ion-text>
-    </div>
 
-    <ion-button expand="block" (click)="login()" class="login-btn">
+    <ion-button expand="block" (click)="registerUser()" class="login-btn">
       Registarse
     </ion-button>
 

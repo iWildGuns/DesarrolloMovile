@@ -25,7 +25,7 @@ export class SignInPage {
   }
 
   forgotPassword() {
-    // navegar a recuperar contraseña
+    this.router.navigate(['/forgot-password']);
   }
 
   goToRegister() {

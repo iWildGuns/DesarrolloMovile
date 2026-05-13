@@ -63,7 +63,7 @@ export class SignUpPage implements OnInit {
   });
 
   forgotPassword() {}
-  login() {}
+  registerUser() {}
   loginWithGoogle() {}
   goToSignIn() {
     this.router.navigate(['/sign-in']);
