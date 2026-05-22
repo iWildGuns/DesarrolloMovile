@@ -55,7 +55,11 @@ export class MenuComponent {
     this.router.navigate(['login']);
     this.cerrarMenu();
   }
-
+/*Navegar a la pagina de cotizaciones entre dos fechas */
+navegarACotizacionesEntreFechas(): void {
+    this.router.navigate(['/currencies-between-dates']);
+    this.cerrarMenu();
+  }
   // ============ MÉTODOS AUXILIARES ============
   /**
    * Cierra el menú lateral

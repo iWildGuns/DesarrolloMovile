@@ -4,6 +4,7 @@ import { LoginPage } from './layout/login/login.page';
 import { LayoutComponent } from './layout/layout/layout.component';
 import { AllCurrencyViewPage } from './view/all-currency-view/all-currency-view.page';
 import { CurrencyPage } from './view/currency/currency.page';
+import { CurrenciesBetweenDatesPage } from './view/currencies-between-dates/currencies-between-dates.page';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,10 @@ export const routes: Routes = [
       {
         path: 'all-currency-view',
         component: AllCurrencyViewPage,
+      },
+      {
+        path: 'currencies-between-dates',
+        component: CurrenciesBetweenDatesPage,
       },
     ],
   },

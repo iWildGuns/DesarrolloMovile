@@ -9,11 +9,11 @@
   <ion-item>
     <ion-label position="stacked">Moneda</ion-label>
 
-    <ion-select [(ngModel)]="moneda">
-      <ion-select-option value="EUR">EUR</ion-select-option>
-      <ion-select-option value="USD">USD</ion-select-option>
-      <ion-select-option value="BRL">BRL</ion-select-option>
-    </ion-select>
+    <ion-select  [(ngModel)]="moneda">
+        <ion-select-option *ngFor="let divisa of divisas" [value]="divisa.codigo">
+          {{ divisa.codigo }} - {{ divisa.denominacion }}
+        </ion-select-option>
+      </ion-select>
   </ion-item>
   
   <ion-item>
@@ -58,4 +58,7 @@
     
   </div>
 </ion-list>
+ <div style="padding:20px;">
+    <canvas id="miGrafico"></canvas>
+  </div>
 </ion-content>
