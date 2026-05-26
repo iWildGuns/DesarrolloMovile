@@ -21,9 +21,20 @@
       </ion-item>
     </ion-list>
   </div>
-  <ion-list (click)="navegarALogin()">
+  <!-- <ion-list (click)="logOut()">
     <ion-item>
-      <ion-label>Iniciar sesion</ion-label>
+      <ion-label>Cerrar sesion</ion-label>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
+  @if (isLoggedIn$ | async) {
+  <ion-item button (click)="handleAuthAction(true)" detail="false" lines="none">
+    <ion-icon slot="start" name="log-out-outline" color="danger"></ion-icon>
+    <ion-label color="danger">Cerrar Sesión</ion-label>
+  </ion-item>
+  } @else {
+  <ion-item button (click)="handleAuthAction(false)" detail="false" lines="none">
+    <ion-icon slot="start" name="log-in-outline" color="success"></ion-icon>
+    <ion-label color="success">Log In / Sign Up</ion-label>
+  </ion-item>
+  }
 </ion-menu>
