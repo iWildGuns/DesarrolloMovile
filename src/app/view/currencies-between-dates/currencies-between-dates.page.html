@@ -3,25 +3,60 @@
     <ion-title>Cotizaciones entre dos fechas</ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-segment [(ngModel)]="vistaSeleccionada">
 
+  <ion-segment-button value="lista">
+    <ion-label>Listado</ion-label>
+  </ion-segment-button>
+
+  <ion-segment-button value="grafico">
+    <ion-label>Gráfico</ion-label>
+  </ion-segment-button>
+
+</ion-segment>
 <ion-content>
 
   <ion-item>
     <ion-label position="stacked">Moneda</ion-label>
 
-    <ion-select [(ngModel)]="moneda">
-      <ion-select-option value="EUR">EUR</ion-select-option>
-      <ion-select-option value="USD">USD</ion-select-option>
-      <ion-select-option value="BRL">BRL</ion-select-option>
-    </ion-select>
+    <!-- <ion-select  [(ngModel)]="moneda">
+        <ion-select-option *ngFor="let divisa of divisas" [value]="divisa.codigo">
+          {{ divisa.codigo }} - {{ divisa.denominacion }}
+        </ion-select-option>
+      </ion-select> -->
   </ion-item>
-  
   <ion-item>
+<ion-searchbar
+  placeholder="Buscar divisa"
+  [(ngModel)]="searchTerm"
+  (ionInput)="filterCurrencies($event)">
+</ion-searchbar>
+
+<ion-list *ngIf="showResults">
+
+  <ion-item
+  button
+  *ngFor="let divisa of filteredDivisas"
+  (click)="seleccionarDivisa(divisa)"
+  [color]="divisaSeleccionada?.id === divisa.id ? 'primary' : ''">
+    <ion-label>
+
+      <h2>{{ divisa.codigoMoneda }}</h2>
+
+      <p>{{ divisa.descripcion }}</p>
+
+    </ion-label>
+
+  </ion-item>
+
+</ion-list>
     <ion-label position="stacked">Fecha desde</ion-label>
     
     <ion-input
     type="date"
-    [(ngModel)]="fechaDesde">
+    [(ngModel)]="fechaDesde"
+    [max]="fechaHasta || fechaActual"
+    (ionChange)="validarFechas()">
   </ion-input>
 </ion-item>
 
@@ -30,7 +65,11 @@
   
   <ion-input
   type="date"
-  [(ngModel)]="fechaHasta">
+    [(ngModel)]="fechaHasta"
+    [min]="fechaDesde"
+    [max]="fechaActual"
+    (ionChange)="validarFechas()"
+  >
 </ion-input>
 </ion-item>
 
@@ -38,24 +77,32 @@
   Buscar
 </ion-button>
 
-<ion-list>
-  <div *ngFor="let day of data?.results">
-    
-    <ion-item color="light">
-      <ion-label>
-        <h2>{{ day.fecha }}</h2>
-      </ion-label>
-    </ion-item>
-    
-    <ion-item *ngFor="let d of day.detalle">
-      <ion-label>
-        <h3>{{ d.codigoMoneda }}</h3>
-        <p>{{ d.descripcion }}</p>
-        <p>Pase: {{ d.tipoPase }}</p>
-        <p>Cotización: {{ d.tipoCotizacion }}</p>
-      </ion-label>
-    </ion-item>
-    
+<div [hidden]="vistaSeleccionada!=='lista'">
+  <ion-list>
+    <div *ngFor="let day of data?.results">
+      
+      <ion-item color="light">
+        <ion-label>
+          <h2>{{ day.fecha }}</h2>
+        </ion-label>
+      </ion-item>
+      
+      <ion-item *ngFor="let d of day.detalle">
+        <ion-label>
+          <h3>{{ d.codigoMoneda }}</h3>
+          <p>{{ d.descripcion }}</p>
+          <p>Pase: {{ d.tipoPase }}</p>
+          <p>Cotización: {{ d.tipoCotizacion }}</p>
+        </ion-label>
+      </ion-item>
+      
+    </div>
+  </ion-list>
+  
+</div>
+<div [hidden]="vistaSeleccionada !== 'grafico'">
+  <div style="padding:20px;">
+    <canvas id="miGrafico"></canvas>
   </div>
-</ion-list>
+</div>
 </ion-content>

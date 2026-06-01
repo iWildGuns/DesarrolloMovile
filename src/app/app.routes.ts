@@ -27,7 +27,7 @@ export const routes: Routes = [
         component: AllCurrencyViewPage,
       },
       {
-        path: 'currency-between-date',
+        path: 'currencies-between-dates',
         component: CurrenciesBetweenDatesPage,
       },
     ],
