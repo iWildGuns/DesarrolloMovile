@@ -38,46 +38,47 @@
         <div class="error-msg" *ngIf="passwordInvalid">
           La contraseña es obligatoria.
         </div>
-
-        <div class="error-server" *ngIf="serverError">{{ serverError }}</div>
-
-        <div class="forgot-password">
-          <ion-text color="primary">
-            <a (click)="forgotPassword()">¿Olvidaste tu contraseña?</a>
-          </ion-text>
-        </div>
-
-        <ion-button
-          expand="block"
-          type="submit"
-          [disabled]="loading"
-          class="login-btn"
-        >
-          <span *ngIf="!loading">Iniciar Sesión</span>
-          <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
-        </ion-button>
-
-        <div class="divider">
-          <span>o continuá con</span>
-        </div>
-
-        <ion-button
-          expand="block"
-          fill="outline"
-          (click)="loginWithGoogle()"
-          class="google-btn"
-        >
-          <ion-icon slot="start" name="logo-google"></ion-icon>
-          Continuar con Google
-        </ion-button>
-
-        <div class="register-link">
-          <ion-text>¿No tenés cuenta? </ion-text>
-          <ion-text color="primary">
-            <a (click)="goToRegister()">Registrate</a>
-          </ion-text>
-        </div>
       </div>
+
+      <ion-button
+        expand="block"
+        type="submit"
+        [disabled]="loading"
+        class="login-btn"
+      >
+        <span *ngIf="!loading">Iniciar Sesión</span>
+        <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+      </ion-button>
     </form>
+    <div class="error-server" *ngIf="serverError">{{ serverError }}</div>
+
+    <div class="forgot-password">
+      <ion-text color="primary">
+        <a style="cursor: pointer" (click)="forgotPassword()"
+          >¿Olvidaste tu contraseña?</a
+        >
+      </ion-text>
+    </div>
+
+    <div class="divider">
+      <span>o continuá con</span>
+    </div>
+
+    <ion-button
+      expand="block"
+      fill="outline"
+      (click)="loginWithGoogle()"
+      class="google-btn"
+    >
+      <ion-icon slot="start" name="logo-google"></ion-icon>
+      Continuar con Google
+    </ion-button>
+
+    <div class="register-link">
+      <ion-text>¿No tenés cuenta? </ion-text>
+      <ion-text color="primary">
+        <a style="cursor: pointer" (click)="goToRegister()">Registrate</a>
+      </ion-text>
+    </div>
   </div>
 </ion-content>

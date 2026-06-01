@@ -1,74 +1,124 @@
-import { Component, inject, OnInit } from '@angular/core';
+//
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { signUp } from 'aws-amplify/auth';
 import { CommonModule } from '@angular/common';
-import {
-  FormGroup,
-  FormsModule,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+
 import {
   IonContent,
   IonItem,
   IonInput,
   IonButton,
-  IonText,
   IonIcon,
+  IonText,
+  IonSpinner,
 } from '@ionic/angular/standalone';
-import { Router, RouterModule } from '@angular/router';
-import { SignUpForm } from 'src/types';
+import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
 
 @Component({
   selector: 'app-sign-up',
-  templateUrl: './sign-up.page.html',
-  styleUrls: ['./sign-up.page.scss'],
   standalone: true,
   imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+    IonContent,
+    IonItem,
+    IonInput,
+    IonButton,
     IonIcon,
     IonText,
-    IonButton,
-    IonInput,
-    IonItem,
-    IonContent,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
+    IonSpinner,
+    AmplifyAuthenticatorModule,
   ],
+  templateUrl: './sign-up.page.html',
+  styleUrls: ['./sign-up.page.scss'],
 })
-export class SignUpPage implements OnInit {
+export class SignUpPage {
   hide = true;
+  signUpForm: FormGroup;
+  showPassword = false;
+  loading = false;
+  serverError = '';
 
-  formBuilder = inject(NonNullableFormBuilder);
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+  ) {
+    this.signUpForm = this.fb.group(
+      {
+        name: ['', [Validators.required]],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', Validators.required],
+      },
+      { validators: this.passwordsMatch },
+    );
+  }
 
-  constructor(private router: Router) {}
+  passwordsMatch(group: FormGroup) {
+    const p = group.get('password')?.value;
+    const c = group.get('confirmPassword')?.value;
+    return p === c ? null : { mismatch: true };
+  }
 
-  form: FormGroup = this.formBuilder.group<SignUpForm>({
-    name: this.formBuilder.control('', {
-      validators: Validators.required,
-    }),
-    lastName: this.formBuilder.control('', {
-      validators: Validators.required,
-    }),
-    email: this.formBuilder.control('', {
-      validators: [Validators.required, Validators.email],
-    }),
-    password: this.formBuilder.control('', {
-      validators: Validators.required,
-    }),
-  });
+  get emailInvalid(): boolean {
+    const c = this.signUpForm.get('email');
+    return !!(c?.invalid && c?.touched);
+  }
 
-  forgotPassword() {}
-  registerUser() {}
-  loginWithGoogle() {}
-  goToSignIn() {
+  get passwordInvalid(): boolean {
+    const c = this.signUpForm.get('password');
+    return !!(c?.invalid && c?.touched);
+  }
+
+  get confirmInvalid(): boolean {
+    return !!(
+      this.signUpForm.hasError('mismatch') &&
+      this.signUpForm.get('confirmPassword')?.touched
+    );
+  }
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  async onSubmit(): Promise<void> {
+    if (this.signUpForm.invalid) {
+      this.signUpForm.markAllAsTouched();
+      return;
+    }
+
+    this.loading = true;
+    this.serverError = '';
+
+    const { name, email, password } = this.signUpForm.value;
+    email.trim().toLowerCase();
+
+    try {
+      await signUp({
+        username: email,
+        password,
+        options: {
+          userAttributes: { name, email },
+        },
+      });
+
+      // Cognito manda un código de verificación al email
+      this.router.navigate(['/confirm-email'], {
+        queryParams: { email },
+      });
+    } catch (err: any) {
+      this.serverError = err.message;
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  goToSignIn(): void {
     this.router.navigate(['/sign-in']);
   }
-
-  signUp(): void {
-    if (this.form.invalid) return;
-    console.log(this.form.value);
-  }
-
-  ngOnInit() {}
 }

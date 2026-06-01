@@ -1,61 +1,81 @@
 <ion-content class="ion-padding">
-  <div class="login-container">
-    <div class="login-header">
-      <ion-icon name="person-circle-outline" class="login-icon"></ion-icon>
-      <h1>Bienvenido</h1>
-      <p>Registrate para continuar</p>
+  <div class="signup-container">
+    <div class="signup-header">
+      <ion-icon name="person-add-outline" class="signup-icon"></ion-icon>
+      <h1>Crear cuenta</h1>
+      <p>Completá tus datos para registrarte</p>
     </div>
 
-    <!-- Formulario -->
-    <form [formGroup]="form" (ngSubmit)="signUp()">
+    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" novalidate>
       <ion-item lines="outline">
         <ion-input
           type="text"
-          label="Nombre"
+          formControlName="name"
+          label="Name"
           labelPlacement="floating"
-          placeholder="Hector"
-        >
-        </ion-input>
+          placeholder="Jose"
+        ></ion-input>
       </ion-item>
-      <ion-item lines="outline">
-        <ion-input
-          type="text"
-          label="Apellidos"
-          labelPlacement="floating"
-          placeholder="Diaz Rodriguez"
-        >
-        </ion-input>
-      </ion-item>
+
       <ion-item lines="outline">
         <ion-input
           type="email"
+          formControlName="email"
           label="Email"
           labelPlacement="floating"
           placeholder="tucorreo@ejemplo.com"
-        >
-        </ion-input>
+        ></ion-input>
       </ion-item>
+      <div class="error-msg" *ngIf="emailInvalid">
+        Ingresá un correo válido.
+      </div>
+
       <ion-item lines="outline">
         <ion-input
-          [type]="hide ? 'password' : 'text'"
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
           label="Contraseña"
           labelPlacement="floating"
-          placeholder="••••••••"
-        >
-        </ion-input>
-        <button (click)="hide = !hide"></button>
+          placeholder="Mínimo 8 caracteres"
+        ></ion-input>
+        <ion-button fill="clear" slot="end" (click)="togglePassword()">
+          <ion-icon
+            [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"
+          ></ion-icon>
+        </ion-button>
       </ion-item>
+      <div class="error-msg" *ngIf="passwordInvalid">Mínimo 8 caracteres.</div>
+
+      <ion-item lines="outline">
+        <ion-input
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="confirmPassword"
+          label="Confirmar contraseña"
+          labelPlacement="floating"
+          placeholder="Repetí tu contraseña"
+        ></ion-input>
+      </ion-item>
+      <div class="error-msg" *ngIf="confirmInvalid">
+        Las contraseñas no coinciden.
+      </div>
+
+      <div class="error-server" *ngIf="serverError">{{ serverError }}</div>
+
+      <ion-button
+        expand="block"
+        type="submit"
+        [disabled]="loading"
+        class="signup-btn"
+      >
+        <span *ngIf="!loading">Crear cuenta</span>
+        <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+      </ion-button>
     </form>
 
-    <ion-button expand="block" (click)="registerUser()" class="login-btn">
-      Registarse
-    </ion-button>
-
-    <!-- Link Registrarse -->
-    <div class="register-link">
-      <ion-text>¿Ya tienes cuenta? </ion-text>
+    <div class="signin-link">
+      <ion-text>¿Ya tenés cuenta? </ion-text>
       <ion-text color="primary">
-        <a (click)="goToSignIn()" style="cursor: pointer">Inicia Sesion</a>
+        <a style="cursor: pointer" (click)="goToSignIn()">Iniciá sesión</a>
       </ion-text>
     </div>
   </div>

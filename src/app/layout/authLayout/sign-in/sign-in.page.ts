@@ -1,38 +1,4 @@
-// import { Component } from '@angular/core';
-// import { IonicModule } from '@ionic/angular';
-// import { FormsModule } from '@angular/forms';
-// import { Router, RouterModule } from '@angular/router';
-
-// @Component({
-//   selector: 'app-sign-in',
-//   templateUrl: './sign-in.page.html',
-//   styleUrls: ['./sign-in.page.scss'],
-//   standalone: true,
-//   imports: [IonicModule, FormsModule, RouterModule],
-// })
-// export class SignInPage {
-//   email: string = '';
-//   password: string = '';
-
-//   constructor(private router: Router) {}
-
-//   login() {
-//     // lógica de login con email/password
-//   }
-
-//   loginWithGoogle() {
-//     // lógica de login con Google
-//   }
-
-//   forgotPassword() {
-//     this.router.navigate(['/forgot-password']);
-//   }
-
-//   goToRegister() {
-//     this.router.navigate(['/sign-up']);
-//   }
-// }
-
+//
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -49,6 +15,7 @@ import {
   IonText,
   IonSpinner,
 } from '@ionic/angular/standalone';
+import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
 
 @Component({
   selector: 'app-sign-in',
@@ -64,6 +31,7 @@ import {
     IonIcon,
     IonText,
     IonSpinner,
+    AmplifyAuthenticatorModule,
   ],
   templateUrl: './sign-in.page.html',
   styleUrls: ['./sign-in.page.scss'],
@@ -118,10 +86,18 @@ export class SignInPage {
     const { email, password } = this.loginForm.value;
 
     try {
-      await signIn({ username: email, password });
+      // const result =
+      const result = await signIn({ username: email, password });
+      console.log('USERNAME', JSON.stringify(email));
+      console.log('Password', JSON.stringify(password));
+      console.log('SINGIN RESULT', result);
       this.router.navigate(['/home']);
     } catch (err: any) {
-      this.serverError = err.message;
+      console.error('ERROR COMPLETO:', err);
+      console.error('NAME:', err?.name);
+      console.error('MESSAGE:', err?.message);
+      // console.error(JSON.stringify(err, null, 2));
+      this.serverError = `${err?.name}: ${err?.message}`;
     } finally {
       this.loading = false;
     }

@@ -1,0 +1,59 @@
+<ion-content class="ion-padding">
+  <div class="confirm-container">
+    <div class="confirm-header">
+      <ion-icon name="mail-outline" class="confirm-icon"></ion-icon>
+      <h1>Verificá tu email</h1>
+      <p>Te enviamos un código de 6 dígitos a</p>
+      <p><strong>{{ email }}</strong></p>
+    </div>
+
+    <form [formGroup]="confirmForm" (ngSubmit)="onSubmit()" novalidate>
+      <ion-item lines="outline">
+        <ion-input
+          type="text"
+          formControlName="code"
+          label="Código de verificación"
+          labelPlacement="floating"
+          placeholder="123456"
+          maxlength="6"
+        ></ion-input>
+      </ion-item>
+      <div class="error-msg" *ngIf="codeInvalid">
+        Ingresá el código de 6 dígitos.
+      </div>
+
+      <div class="error-server" *ngIf="serverError">{{ serverError }}</div>
+      <div class="success-msg" *ngIf="successMsg">{{ successMsg }}</div>
+
+      <ion-button
+        expand="block"
+        type="submit"
+        [disabled]="loading"
+        class="confirm-btn"
+      >
+        <span *ngIf="!loading">Verificar cuenta</span>
+        <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+      </ion-button>
+    </form>
+
+    <div class="resend-link">
+      <ion-text>¿No recibiste el código? </ion-text>
+      <ion-text color="primary">
+        <a (click)="resendCode()">
+          <span *ngIf="!resending">Reenviar código</span>
+          <ion-spinner
+            *ngIf="resending"
+            name="crescent"
+            style="width: 16px; height: 16px"
+          ></ion-spinner>
+        </a>
+      </ion-text>
+    </div>
+
+    <div class="signin-link">
+      <ion-text color="primary">
+        <a (click)="goToSignIn()">Volver al inicio de sesión</a>
+      </ion-text>
+    </div>
+  </div>
+</ion-content>

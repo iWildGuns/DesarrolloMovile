@@ -28,6 +28,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'confirm-email',
+    loadComponent: () =>
+      import('./layout/authLayout/confirm-email/confirm-email.page').then(
+        (m) => m.ConfirmEmailPage,
+      ),
+  },
+  {
     path: '',
     loadComponent: () =>
       import('../app/layout/appLayout/layout.component').then(
@@ -58,5 +65,12 @@ export const routes: Routes = [
   {
     path: '**',
     redirectTo: '/home',
+  },
+  {
+    path: 'confirm-email',
+    loadComponent: () =>
+      import('./layout/authLayout/confirm-email/confirm-email.page').then(
+        (m) => m.ConfirmEmailPage,
+      ),
   },
 ];
