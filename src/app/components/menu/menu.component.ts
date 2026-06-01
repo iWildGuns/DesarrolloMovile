@@ -39,16 +39,8 @@ export class MenuComponent {
     this.router.navigate(['login']);
     this.cerrarMenu();
   }
-<<<<<<< HEAD
-
-  navegarBetweenDate(): void {
-    this.router.navigate(['/currency-between-date']);
-    this.cerrarMenu();
-  }
-
-=======
-/*Navegar a la pagina de cotizaciones entre dos fechas */
-navegarACotizacionesEntreFechas(): void {
+  /*Navegar a la pagina de cotizaciones entre dos fechas */
+  navegarACotizacionesEntreFechas(): void {
     this.router.navigate(['/currencies-between-dates']);
     this.cerrarMenu();
   }
@@ -56,7 +48,6 @@ navegarACotizacionesEntreFechas(): void {
   /**
    * Cierra el menú lateral
    */
->>>>>>> iGunsRodri
   private cerrarMenu(): void {
     this.menuController.close(this.menuId);
   }
