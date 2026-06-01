@@ -1,10 +1,4 @@
 import { Routes } from '@angular/router';
-import { HomePage } from './view/home/home.page';
-import { LayoutComponent } from './layout/appLayout/layout.component';
-import { AllCurrencyViewPage } from './view/all-currency-view/all-currency-view.page';
-import { CurrencyPage } from './view/currency/currency.page';
-import { CurrenciesBetweenDatesPage } from './view/currencies-between-dates/currencies-between-dates.page';
-
 export const routes: Routes = [
   {
     path: '',
@@ -13,17 +7,29 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: LayoutComponent,
+    loadComponent: () =>
+      import('../app/layout/appLayout/layout.component').then(
+        (m) => m.LayoutComponent,
+      ),
     children: [
-      { path: 'home', component: HomePage },
-      { path: 'currency', component: CurrencyPage },
       {
-        path: 'all-currency-view',
-        component: AllCurrencyViewPage,
+        path: 'home',
+        loadComponent: () =>
+          import('../app/view/home/home.page').then((m) => m.HomePage),
       },
       {
-        path: 'currencies-between-dates',
-        component: CurrenciesBetweenDatesPage,
+        path: 'currency',
+        loadComponent: () =>
+          import('../app/view/currency/currency.page').then(
+            (m) => m.CurrencyPage,
+          ),
+      },
+      {
+        path: 'all-currency-view',
+        loadComponent: () =>
+          import('../app/view/all-currency-view/all-currency-view.page').then(
+            (m) => m.AllCurrencyViewPage,
+          ),
       },
     ],
   },

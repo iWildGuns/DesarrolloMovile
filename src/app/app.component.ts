@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  IonApp,
-  IonRouterOutlet,
-  IonContent,
-  IonTitle,
-} from '@ionic/angular/standalone';
+import { IonApp, IonRouterOutlet, IonContent } from '@ionic/angular/standalone';
 import { MenuComponent } from './components/menu/menu.component';
 import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
 import { AuthService } from './service/auth-service';
@@ -16,7 +11,6 @@ import { Router } from '@angular/router';
   templateUrl: 'app.component.html',
   styleUrl: 'app.component.scss',
   imports: [
-    IonTitle,
     IonApp,
     IonRouterOutlet,
     MenuComponent,
