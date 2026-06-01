@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import{IonicModule} from '@ionic/angular';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
 import { HttpClientService } from 'src/app/service/http-client';
 
 @Component({
@@ -10,42 +9,37 @@ import { HttpClientService } from 'src/app/service/http-client';
   templateUrl: './currencies-between-dates.page.html',
   styleUrls: ['./currencies-between-dates.page.scss'],
   standalone: true,
-  imports: [ CommonModule, FormsModule,IonicModule]
+  imports: [CommonModule, FormsModule, IonicModule],
 })
 export class CurrenciesBetweenDatesPage implements OnInit {
-
-  constructor(private httpClientService:HttpClientService) { }
+  constructor(private httpClientService: HttpClientService) {}
   moneda: string = 'EUR';
-fechaDesde: string = '';
-fechaHasta: string = '';
-data:any
+  fechaDesde: string = '';
+  fechaHasta: string = '';
+  data: any;
   ngOnInit() {
-    this.httpClientService.getCurrenciesBetweenDate(
-    'EUR',
-    '2024-06-12',
-    '2024-06-14'
-  ).subscribe({
-    next: (res) => {
-  this.data = res;
-},
-    error: (err) => {
-      console.error('ERROR:', err);
-    }
-  });
+    this.httpClientService
+      .getCurrenciesBetweenDate('EUR', '2024-06-12', '2024-06-14')
+      .subscribe({
+        next: (res) => {
+          this.data = res;
+        },
+        error: (err) => {
+          console.error('ERROR:', err);
+        },
+      });
   }
-buscarCotizaciones() {
-  this.httpClientService.getCurrenciesBetweenDate(
-    this.moneda,
-    this.fechaDesde,
-    this.fechaHasta
-  ).subscribe({
-    next: (res) => {
-      console.log(res);
-      this.data = res;
-    },
-    error: (err) => {
-      console.error(err);
-    }
-  });
-}
+  buscarCotizaciones() {
+    this.httpClientService
+      .getCurrenciesBetweenDate(this.moneda, this.fechaDesde, this.fechaHasta)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          this.data = res;
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+  }
 }

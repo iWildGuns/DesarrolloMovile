@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  FormBuilder,
   FormGroup,
   FormsModule,
   NonNullableFormBuilder,
@@ -10,9 +9,6 @@ import {
 } from '@angular/forms';
 import {
   IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
   IonItem,
   IonInput,
   IonButton,

@@ -14,6 +14,7 @@ import { ICurrencyByDate, IResults } from 'src/types/index';
 export class HttpClientService {
   private readonly API_URL =
     'https://api.bcra.gob.ar/estadisticascambiarias/v1.0';
+  // 'https://api.bcra.gob.ar/estadisticascambiarias/v1.0/Maestros/Divisas';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -35,13 +36,16 @@ export class HttpClientService {
   getAllCurrencyDetails(): Observable<ICotizaciones> {
     return this.httpClient.get<ICotizaciones>(`${this.API_URL}/Cotizaciones`);
   }
-  getCurrenciesBetweenDate(moneda: string, fechaDesde: string, fechaHasta: string) {
-  const url =
-    `${this.API_URL}/Cotizaciones/${moneda}?fechadesde=${fechaDesde}&fechahasta=${fechaHasta}`;
+  getCurrenciesBetweenDate(
+    moneda: string,
+    fechaDesde: string,
+    fechaHasta: string,
+  ) {
+    const url = `${this.API_URL}/Cotizaciones/${moneda}?fechadesde=${fechaDesde}&fechahasta=${fechaHasta}`;
 
-  const data = this.httpClient.get<ICurrencyByDate>(url);
+    const data = this.httpClient.get<ICurrencyByDate>(url);
 
-  console.log(url); 
-  return data;
-}
+    console.log(url);
+    return data;
+  }
 }

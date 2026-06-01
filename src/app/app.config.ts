@@ -16,7 +16,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
+  providers: [ 
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),

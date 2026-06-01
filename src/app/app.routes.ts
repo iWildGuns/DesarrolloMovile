@@ -59,11 +59,4 @@ export const routes: Routes = [
     path: '**',
     redirectTo: '/home',
   },
-  {
-    path: 'forgot-password',
-    loadComponent: () =>
-      import('./layout/authLayout/forgot-password/forgot-password.page').then(
-        (m) => m.ForgotPasswordPage,
-      ),
-  },
 ];

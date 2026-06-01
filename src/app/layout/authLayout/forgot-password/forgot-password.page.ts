@@ -3,9 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormGroup, FormsModule } from '@angular/forms';
 import {
   IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
   IonIcon,
   IonInput,
   IonItem,
@@ -26,9 +23,6 @@ import { Router } from '@angular/router';
     IonInput,
     IonIcon,
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     CommonModule,
     FormsModule,
   ],
