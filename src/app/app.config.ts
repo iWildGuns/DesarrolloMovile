@@ -33,6 +33,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
-    provideAuth(() => getAuth()), provideAuth_alias(authConfig),
+    provideAuth(() => getAuth()),
+    provideAuth_alias(authConfig),
   ],
 };
