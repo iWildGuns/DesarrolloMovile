@@ -13,6 +13,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { authConfig } from './auth/auth.config';
+import { provideAuth as provideAuth_alias } from 'angular-auth-oidc-client';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAj9G9OFb1lNUhxW2GJnHs-oE5yPnxWhjE',
@@ -32,5 +34,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),
+    provideAuth_alias(authConfig),
   ],
 };

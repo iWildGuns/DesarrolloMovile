@@ -1,6 +1,11 @@
 <ion-content>
-  <ion-app>
-    <app-menu menuId="main-menu" contentId="main-content"></app-menu>
-    <ion-router-outlet id="main-content"></ion-router-outlet>
-  </ion-app>
+  <h1 class="logo-title">CotizApp</h1>
+  <div style="margin-top: 50px">
+    <amplify-authenticator>
+      <ion-app>
+        <app-menu menuId="main-menu" contentId="main-content"></app-menu>
+        <ion-router-outlet id="main-content"></ion-router-outlet>
+      </ion-app>
+    </amplify-authenticator>
+  </div>
 </ion-content>

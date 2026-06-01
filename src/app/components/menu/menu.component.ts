@@ -1,5 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
 import {
   IonItem,
   IonMenu,
@@ -8,22 +10,42 @@ import {
   IonToolbar,
   IonTitle,
   MenuController,
+  IonIcon,
 } from '@ionic/angular/standalone';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/service/auth-service';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
-  imports: [IonItem, IonToolbar, IonTitle, IonMenu, IonList, IonLabel],
+  imports: [
+    IonIcon,
+    IonItem,
+    IonToolbar,
+    IonTitle,
+    IonMenu,
+    IonList,
+    IonLabel,
+    CommonModule,
+    AmplifyAuthenticatorModule,
+  ],
+  standalone: true,
 })
 export class MenuComponent {
   @Input() contentId: string = 'main-content';
   @Input() menuId: string = 'main-menu';
+  public isLoggedIn$!: Observable<boolean>;
 
   constructor(
     private router: Router,
     private menuController: MenuController,
+    private authService: AuthService,
   ) {}
+
+  ngOnInit(): void {
+    this.isLoggedIn$ = this.authService.isLoggedIn$;
+  }
 
   navegarADivisas(): void {
     this.router.navigate(['/all-currency-view']);
@@ -48,6 +70,20 @@ export class MenuComponent {
   /**
    * Cierra el menú lateral
    */
+
+  // logOut(): void {
+  //   this.authService.logout();
+  //   this.cerrarMenu();
+  // }
+  handleAuthAction(isLoggedIn: boolean) {
+    if (isLoggedIn) {
+      this.authService.logout();
+      this.router.navigate(['/home']);
+    } else {
+      this.router.navigate(['/home']);
+    }
+  }
+
   private cerrarMenu(): void {
     this.menuController.close(this.menuId);
   }
