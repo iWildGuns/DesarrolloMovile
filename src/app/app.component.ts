@@ -4,6 +4,7 @@ import { MenuComponent } from './components/menu/menu.component';
 import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
 import { AuthService } from './service/auth-service';
 import { Observable } from 'rxjs';
+import { I18n } from 'aws-amplify/utils';
 import { Router } from '@angular/router';
 
 @Component({
@@ -29,6 +30,20 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoggedIn$ = this.authService.isLoggedIn$;
+    I18n.putVocabularies(translations);
+
+    I18n.setLanguage('es');
+
+    I18n.putVocabulariesForLanguage('es', {
+      Username: 'Correo Electrónico',
+      'Enter your Username': 'Ingrese su Correo Electrónico',
+      'Enter your Password': 'Ingrese su Contraseña',
+      'Sign In': 'Iniciar Sesión',
+      'Sign Up': 'Registrarse',
+      Email: 'Correo Electrónico',
+      'Username should be an email.':
+        'El nombre de usuario debe ser un correo electrónico.',
+    });
   }
 
   handleAuthAction(isLoggedIn: boolean) {
