@@ -31,6 +31,13 @@ export const routes: Routes = [
             (m) => m.AllCurrencyViewPage,
           ),
       },
+      {
+        path: 'app-currencies-between-dates',
+        loadComponent: () =>
+          import('../app/view/currencies-between-dates/currencies-between-dates.page').then(
+            (m) => m.CurrenciesBetweenDatesPage,
+          ),
+      },
     ],
   },
   {

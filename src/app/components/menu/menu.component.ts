@@ -48,12 +48,12 @@ export class MenuComponent {
   }
 
   navegarADivisas(): void {
-    this.router.navigate(['/all-currency-view']);
+    this.router.navigate(['all-currency-view']);
     this.cerrarMenu();
   }
 
   navegarACotizaciones(): void {
-    this.router.navigate(['/currency']);
+    this.router.navigate(['currency']);
     this.cerrarMenu();
   }
 
@@ -63,7 +63,7 @@ export class MenuComponent {
   }
   /*Navegar a la pagina de cotizaciones entre dos fechas */
   navegarACotizacionesEntreFechas(): void {
-    this.router.navigate(['/currencies-between-dates']);
+    this.router.navigate(['app-currencies-between-dates']);
     this.cerrarMenu();
   }
   // ============ MÉTODOS AUXILIARES ============
