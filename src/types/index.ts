@@ -26,7 +26,7 @@ export type IDivisas = {
 
 export type ICotizaciones = {
   status: number;
-  results: ICurrencyByDate;
+  results: ICurrencyByDate[];
 };
 
 export type ICurrencyByDate = {

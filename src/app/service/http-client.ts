@@ -35,7 +35,23 @@ export class HttpClientService {
 
     const data = this.httpClient.get<ICurrencyByDate>(url);
 
+<<<<<<< HEAD
     console.log(url);
     return data;
   }
+=======
+  console.log(url); 
+  return data;
+}
+getLastCurrencyQuote(moneda: string):Observable<ICotizaciones> {
+
+
+  return this.httpClient.get<ICotizaciones>(
+    `${this.API_URL}/Cotizaciones/${moneda}?limit=10`
+  );
+
+
+}
+
+>>>>>>> iGunsRodri-FeatureCotizacion
 }
