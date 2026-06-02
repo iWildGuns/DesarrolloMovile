@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { IonApp, IonRouterOutlet, IonContent } from '@ionic/angular/standalone';
 import { MenuComponent } from './components/menu/menu.component';
-import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
+import {
+  AmplifyAuthenticatorModule,
+  translations,
+} from '@aws-amplify/ui-angular';
 import { AuthService } from './service/auth-service';
 import { Observable } from 'rxjs';
 import { I18n } from 'aws-amplify/utils';
