@@ -61,6 +61,13 @@ navegarACotizacionesEntreFechas(): void {
     this.cerrarMenu();
   }
   // ============ MÉTODOS AUXILIARES ============
+  /*
+   * /*Navegar a la pagina de cotizaciones entre dos fechas */
+navegarACurrencyConverter(): void {
+    this.router.navigate(['/currency-converter']);
+    this.cerrarMenu();
+  }
+  // ============ MÉTODOS AUXILIARES ============
   /**
    * Cierra el menú lateral
    */

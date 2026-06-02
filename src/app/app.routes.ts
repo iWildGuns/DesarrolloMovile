@@ -5,6 +5,7 @@ import { LayoutComponent } from './layout/layout/layout.component';
 import { AllCurrencyViewPage } from './view/all-currency-view/all-currency-view.page';
 import { CurrencyPage } from './view/currency/currency.page';
 import { CurrenciesBetweenDatesPage } from './view/currencies-between-dates/currencies-between-dates.page';
+import { CurrencyConverterPage } from './view/currency-converter/currency-converter.page';
 
 export const routes: Routes = [
   {
@@ -30,10 +31,20 @@ export const routes: Routes = [
         path: 'currencies-between-dates',
         component: CurrenciesBetweenDatesPage,
       },
+        {
+        path: 'currency-converter',
+        component:CurrencyConverterPage,
+      },
+
     ],
   },
   {
     path: '**',
     redirectTo: '/main',
   },
+  // {
+  //   path: 'currency-converter',
+  //   loadComponent: () => import('./view/currency-converter/currency-converter.page').then( m => m.CurrencyConverterPage)
+  // },
+
 ];
