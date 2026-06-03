@@ -1,10 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title slot="" (click)="goHome()" class="logo-title">
-      CotizApp
+    <ion-title (click)="goHome()" class="logo-title ion-text-center">
+      <div>CotizApp</div>
     </ion-title>
+
     <ion-buttons slot="end">
-      <ion-title>Menu</ion-title>
+      <span class="menu-text" style="margin-right: 8px; color: white"
+        >Menu</span
+      >
       <ion-menu-button [menu]="menuId"></ion-menu-button>
     </ion-buttons>
   </ion-toolbar>

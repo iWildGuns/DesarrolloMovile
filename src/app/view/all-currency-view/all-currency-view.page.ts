@@ -9,7 +9,7 @@ import {
   IonContent,
 } from '@ionic/angular/standalone';
 import { HttpClientService } from 'src/app/service/http-client';
-import { IDivisa, ICurrencyByDate } from 'src/types';
+import { IDivisa, IResults } from 'src/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -29,7 +29,7 @@ import { takeUntil } from 'rxjs/operators';
   ],
 })
 export class AllCurrencyViewPage implements OnInit, OnDestroy {
-  results: ICurrencyByDate | null = null;
+  results: IResults | null = null;
   divisasFiltradas: IDivisa[] = [];
   searchTerm: string = '';
 

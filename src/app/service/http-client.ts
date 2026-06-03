@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IDivisas, ICotizaciones } from 'src/types';
-import { ICurrencyByDate } from 'src/types/index';
+import { IDivisas, IResults } from 'src/types';
 
 @Injectable({
   providedIn: 'root',
@@ -17,14 +16,14 @@ export class HttpClientService {
     return this.httpClient.get<IDivisas>(`${this.API_URL}/Maestros/Divisas`);
   }
 
-  getCurrencyByDate(date: string): Observable<ICotizaciones> {
-    return this.httpClient.get<ICotizaciones>(
+  getCurrencyByDate(date: string): Observable<IDivisas> {
+    return this.httpClient.get<IDivisas>(
       `${this.API_URL}/Cotizaciones?fecha=${date}`,
     );
   }
 
-  getAllCurrencyDetails(): Observable<ICotizaciones> {
-    return this.httpClient.get<ICotizaciones>(`${this.API_URL}/Cotizaciones`);
+  getAllCurrencyDetails(): Observable<IDivisas> {
+    return this.httpClient.get<IDivisas>(`${this.API_URL}/Cotizaciones`);
   }
   getCurrenciesBetweenDate(
     moneda: string,
@@ -33,13 +32,13 @@ export class HttpClientService {
   ) {
     const url = `${this.API_URL}/Cotizaciones/${moneda}?fechadesde=${fechaDesde}&fechahasta=${fechaHasta}`;
 
-    const data = this.httpClient.get<ICurrencyByDate>(url);
+    const data = this.httpClient.get<IResults>(url);
 
     console.log(url);
     return data;
   }
-  getLastCurrencyQuote(moneda: string): Observable<ICotizaciones> {
-    return this.httpClient.get<ICotizaciones>(
+  getLastCurrencyQuote(moneda: string): Observable<IDivisas> {
+    return this.httpClient.get<IDivisas>(
       `${this.API_URL}/Cotizaciones/${moneda}?limit=10`,
     );
   }

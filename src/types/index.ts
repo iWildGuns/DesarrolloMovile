@@ -11,20 +11,11 @@ export type IResults = {
   id?: number;
   codigo?: string;
   denominacion?: string;
+  fecha: string;
+  detalle: IDivisa[];
 };
 
 export type IDivisas = {
   status: number;
   results: IResults[];
-};
-
-export type ICotizaciones = {
-  status: number;
-  results: ICurrencyByDate[];
-};
-
-export type ICurrencyByDate = {
-  id?: number;
-  fecha: string;
-  detalle: IDivisa[];
 };
