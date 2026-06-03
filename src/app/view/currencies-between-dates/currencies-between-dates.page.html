@@ -3,7 +3,8 @@
     <ion-title>Cotizaciones entre dos fechas</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-segment [(ngModel)]="vistaSeleccionada">
+
+<ion-segment [(ngModel)]="vistaSeleccionada" (ionChange)="segmentChanged()">
   <ion-segment-button value="lista">
     <ion-label>Listado</ion-label>
   </ion-segment-button>
@@ -12,40 +13,43 @@
     <ion-label>Gráfico</ion-label>
   </ion-segment-button>
 </ion-segment>
-<ion-content>
-  <ion-item>
-    <ion-label position="stacked">Moneda</ion-label>
 
-    <!-- <ion-select  [(ngModel)]="moneda">
-        <ion-select-option *ngFor="let divisa of divisas" [value]="divisa.codigo">
-          {{ divisa.codigo }} - {{ divisa.denominacion }}
-        </ion-select-option>
-      </ion-select> -->
-  </ion-item>
-  <ion-item>
+<ion-content class="ion-padding">
+  <ion-item lines="none">
     <ion-searchbar
       placeholder="Buscar divisa"
       [(ngModel)]="searchTerm"
+      debounce="300"
       (ionInput)="filterCurrencies($event)"
     >
     </ion-searchbar>
+  </ion-item>
 
-    <ion-list *ngIf="showResults">
-      <ion-item
-        button
-        *ngFor="let divisa of filteredDivisas"
-        (click)="seleccionarDivisa(divisa)"
-        [color]="divisaSeleccionada?.id === divisa.id ? 'primary' : ''"
-      >
-        <ion-label>
-          <h2>{{ divisa.codigoMoneda }}</h2>
+  <ion-list
+    *ngIf="showResults"
+    style="
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    "
+  >
+    <ion-item
+      button
+      *ngFor="let divisa of filteredDivisas"
+      (click)="seleccionarDivisa(divisa)"
+      [color]="divisaSeleccionada?.id === divisa.id ? 'primary' : ''"
+    >
+      <ion-label>
+        <h2>{{ divisa.codigoMoneda }}</h2>
+        <p>{{ divisa.descripcion }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
-          <p>{{ divisa.descripcion }}</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
+  <ion-item>
     <ion-label position="stacked">Fecha desde</ion-label>
-
     <ion-input
       type="date"
       [(ngModel)]="fechaDesde"
@@ -57,7 +61,6 @@
 
   <ion-item>
     <ion-label position="stacked">Fecha hasta</ion-label>
-
     <ion-input
       type="date"
       [(ngModel)]="fechaHasta"
@@ -68,43 +71,54 @@
     </ion-input>
   </ion-item>
 
-  <ion-button expand="block" (click)="buscarCotizaciones()">
+  <ion-button
+    expand="block"
+    class="ion-margin-top"
+    (click)="buscarCotizaciones()"
+  >
     Buscar
   </ion-button>
 
-  <div [hidden]="vistaSeleccionada!=='lista'">
-    <ion-list>
+  <div [hidden]="vistaSeleccionada !== 'lista'">
+    <ion-list class="ion-margin-top">
       <div *ngFor="let day of data?.results">
         <ion-item color="light">
           <ion-label>
-            <h2>{{ day.fecha }}</h2>
+            <h2 style="font-weight: bold">{{ day.fecha }}</h2>
           </ion-label>
         </ion-item>
 
         <ion-item *ngFor="let d of day.detalle">
           <ion-label>
-            <h3>{{ d.codigoMoneda }}</h3>
-            <p>{{ d.descripcion }}</p>
+            <h3>{{ d.codigoMoneda }} - {{ d.descripcion }}</h3>
             <p>Pase: {{ d.tipoPase }}</p>
-            <p>Cotización: {{ d.tipoCotizacion }}</p>
+            <p
+              style="font-weight: 500; color: var(--ion-color-success, #2dd36f)"
+            >
+              Cotización: {{ d.tipoCotizacion }}
+            </p>
           </ion-label>
         </ion-item>
       </div>
     </ion-list>
   </div>
+
   <div [hidden]="vistaSeleccionada !== 'grafico'">
-    <div style="padding: 20px">
+    <div style="padding: 10px 0; height: 300px; position: relative">
       <canvas id="miGrafico"></canvas>
-      <ion-button
-        [disabled]="disable"
-        fill="outline"
-        shape="round"
-        color="medium"
-        (click)="descargarGraficoNativo()"
-      >
-        <ion-icon slot="start" name="download-outline"></ion-icon>
-        Exportar
-      </ion-button>
     </div>
+
+    <ion-button
+      [disabled]="disable"
+      expand="block"
+      fill="outline"
+      shape="round"
+      color="medium"
+      class="ion-margin-top"
+      (click)="descargarGraficoNativo()"
+    >
+      <ion-icon slot="start" name="share-social-outline"></ion-icon>
+      Exportar Gráfico
+    </ion-button>
   </div>
 </ion-content>
