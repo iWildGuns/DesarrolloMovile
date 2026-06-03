@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AmplifyAuthenticatorModule } from '@aws-amplify/ui-angular';
 import {
@@ -9,10 +9,15 @@ import {
   IonLabel,
   IonToolbar,
   IonTitle,
+  IonIcon,
+  IonToggle,
   MenuController,
 } from '@ionic/angular/standalone';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/service/auth-service';
+import { ThemeService } from 'src/app/service/theme';
+import { addIcons } from 'ionicons';
+import { moon, sunny, gridOutline, restaurantOutline, receiptOutline, fastFoodOutline, cardOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-menu',
@@ -25,6 +30,8 @@ import { AuthService } from 'src/app/service/auth-service';
     IonMenu,
     IonList,
     IonLabel,
+    IonIcon,
+    IonToggle,
     CommonModule,
     AmplifyAuthenticatorModule,
   ],
@@ -34,12 +41,15 @@ export class MenuComponent {
   @Input() contentId: string = 'main-content';
   @Input() menuId: string = 'main-menu';
   public isLoggedIn$!: Observable<boolean>;
+  public themeService = inject(ThemeService)
 
   constructor(
     private router: Router,
     private menuController: MenuController,
     private authService: AuthService,
-  ) {}
+  ) {
+    addIcons({ moon, sunny, 'grid-outline': gridOutline, 'restaurant-outline': restaurantOutline, 'receipt-outline': receiptOutline, 'fast-food-outline': fastFoodOutline, 'card-outline': cardOutline });
+  }
 
   ngOnInit(): void {
     this.isLoggedIn$ = this.authService.isLoggedIn$;
@@ -65,8 +75,7 @@ export class MenuComponent {
     this.cerrarMenu();
   }
   // ============ MÉTODOS AUXILIARES ============
-  /*
-   * /*Navegar a la pagina de cotizaciones entre dos fechas */
+  /*Navegar a la pagina de cotizaciones entre dos fechas */
   navegarACurrencyConverter(): void {
     this.router.navigate(['/currency-converter']);
     this.cerrarMenu();

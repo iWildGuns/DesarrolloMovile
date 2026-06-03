@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { IonApp, IonRouterOutlet, IonContent } from '@ionic/angular/standalone';
 import { MenuComponent } from './components/menu/menu.component';
 import {
@@ -9,6 +9,7 @@ import { AuthService } from './service/auth-service';
 import { Observable } from 'rxjs';
 import { I18n } from 'aws-amplify/utils';
 import { Router } from '@angular/router';
+import { ThemeService } from './service/theme';
 
 @Component({
   selector: 'app-root',
@@ -43,7 +44,7 @@ export class AppComponent implements OnInit {
       'Enter your Password': 'Ingrese su Contraseña',
       'Sign In': 'Iniciar Sesión',
       'Sign Up': 'Registrarse',
-      Email: 'Correo Electrónico',
+      'Email': 'Correo Electrónico',
       'Username should be an email.':
         'El nombre de usuario debe ser un correo electrónico.',
     });
