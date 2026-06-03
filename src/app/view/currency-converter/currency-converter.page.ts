@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { HttpClientService } from 'src/app/service/http-client';
 import { IDivisas, IResults } from 'src/types';
+import { addIcons } from 'ionicons';
+import { logoWhatsapp } from 'ionicons/icons';
 
 @Component({
   selector: 'app-currency-converter',
@@ -27,7 +29,9 @@ export class CurrencyConverterPage implements OnInit {
   textoBuscado = '';
   monedaSeleccionada?: IResults;
 
-  constructor(public httpClientService: HttpClientService) {}
+  constructor(public httpClientService: HttpClientService) {
+    addIcons({ logoWhatsapp });
+  }
 
   ngOnInit() {
     this.cargarDivisas();
@@ -68,11 +72,9 @@ export class CurrencyConverterPage implements OnInit {
   convertir(): void {
     this.httpClientService.getLastCurrencyQuote(this.moneda).subscribe({
       next: (res) => {
-        console.log(JSON.stringify(res, null, 2));
         const ultimaCotizacion = res.results[0];
 
         this.cotizacionActual = ultimaCotizacion.detalle[0].tipoCotizacion;
-        console.log(this.cotizacionActual);
         this.fechaCotizacion = ultimaCotizacion.fecha;
         this.resultado = this.importe * this.cotizacionActual;
       },

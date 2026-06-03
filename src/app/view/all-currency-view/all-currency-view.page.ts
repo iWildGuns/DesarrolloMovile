@@ -12,6 +12,8 @@ import { HttpClientService } from 'src/app/service/http-client';
 import { IDivisa, IResults } from 'src/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { addIcons } from 'ionicons';
+import { calendarOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-all-currency-view',
@@ -35,7 +37,9 @@ export class AllCurrencyViewPage implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private httpService: HttpClientService) {}
+  constructor(private httpService: HttpClientService) {
+    addIcons({ calendarOutline });
+  }
 
   ngOnInit(): void {
     this.loadCurrencyDetails();

@@ -37,6 +37,7 @@
     <ion-input
       type="number"
       [(ngModel)]="importe"
+      [clearOnEdit]="true"
       placeholder="Ingrese un importe"
     >
     </ion-input>
@@ -61,7 +62,7 @@
       </p>
       <p>
         <strong>Cotización utilizada:</strong>
-        {{ cotizacionActual | currency:'ARS': 'symbol':'1.2-2' }}
+        {{ cotizacionActual | currency:'ARS ': 'symbol':'1.2-2' }}
       </p>
       <p *ngIf="fechaCotizacion">
         <strong>Fecha:</strong>

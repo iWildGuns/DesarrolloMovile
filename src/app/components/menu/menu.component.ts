@@ -10,7 +10,6 @@ import {
   IonToolbar,
   IonTitle,
   MenuController,
-  IonIcon,
 } from '@ionic/angular/standalone';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/service/auth-service';
@@ -20,7 +19,6 @@ import { AuthService } from 'src/app/service/auth-service';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
   imports: [
-    IonIcon,
     IonItem,
     IonToolbar,
     IonTitle,

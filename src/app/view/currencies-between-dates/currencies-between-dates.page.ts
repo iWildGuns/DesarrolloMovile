@@ -7,6 +7,8 @@ import { Chart } from 'chart.js/auto';
 import { IDivisa, IDivisas } from 'src/types';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
+import { addIcons } from 'ionicons';
+import { shareSocialOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-currencies-between-dates',
@@ -32,7 +34,9 @@ export class CurrenciesBetweenDatesPage implements OnInit {
   data: any;
   disable: boolean = true;
 
-  constructor(private httpClientService: HttpClientService) {}
+  constructor(private httpClientService: HttpClientService) {
+    addIcons({ shareSocialOutline });
+  }
 
   ngOnInit() {
     const hoy = new Date();

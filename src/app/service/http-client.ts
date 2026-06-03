@@ -34,7 +34,6 @@ export class HttpClientService {
 
     const data = this.httpClient.get<IResults>(url);
 
-    console.log(url);
     return data;
   }
   getLastCurrencyQuote(moneda: string): Observable<IDivisas> {
