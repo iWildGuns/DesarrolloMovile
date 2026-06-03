@@ -8,12 +8,11 @@ import { Hub } from 'aws-amplify/utils';
 })
 export class AuthService {
   private loggedIn$ = new BehaviorSubject<boolean>(false);
-  
-  constructor() {
 
+  constructor() {
     this.checkCurrentUser();
 
-    Hub.listen('auth', ({payload}) => {
+    Hub.listen('auth', ({ payload }) => {
       if (payload.event === 'signedIn') {
         this.loggedIn$.next(true);
       } else if (payload.event === 'signedOut') {
@@ -40,7 +39,6 @@ export class AuthService {
       await signOut();
     } catch (error) {
       console.error('Error signing out: ', error);
-      
     }
   }
 }

@@ -87,4 +87,21 @@ export class CurrencyConverterPage implements OnInit {
 
     return `${anio}-${mes}-${dia}`;
   }
+
+  shareOnWhatsApp() {
+    if (this.resultado === 0 || !this.importe || !this.monedaSeleccionada) {
+      return;
+    }
+
+    const mensaje =
+      ` *Conversor de Divisas*\n` +
+      `Monto base: ${this.importe}\n` +
+      `Moneda seleccionada: ${this.monedaSeleccionada.codigo} - ${this.monedaSeleccionada.denominacion}\n` +
+      `Resultado: ${this.resultado.toFixed(2)} ARS\n` +
+      `Tasa de cambio: 1 ${this.monedaSeleccionada.codigo} = ${this.cotizacionActual} ARS\n` +
+      `Fecha cotización: ${this.fechaCotizacion}`;
+
+    const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, '_blank');
+  }
 }
