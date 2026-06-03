@@ -33,7 +33,21 @@
     @for(divisa of divisasFiltradas; track divisa.id) {
     <ion-card class="divisa-card">
       <ion-card-content>
-        <span class="divisa-badge">{{ divisa.codigoMoneda }}</span>
+        <div class="divisa-header">
+          <span class="divisa-badge">{{ divisa.codigoMoneda }}</span>
+          <ion-button
+            fill="clear"
+            size="small"
+            (click)="toggleFavorite(divisa)"
+            class="favorite-btn"
+            [class.active]="isFavorite(divisa.codigoMoneda)"
+          >
+            <ion-icon
+              slot="icon-only"
+              [name]="isFavorite(divisa.codigoMoneda) ? 'star' : 'star-outline'"
+            ></ion-icon>
+          </ion-button>
+        </div>
         <p class="divisa-name">{{ divisa.descripcion }}</p>
         <div class="divisa-values">
           <div class="divisa-row">

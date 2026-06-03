@@ -97,6 +97,28 @@ ion-searchbar {
   margin-bottom: 8px;
 }
 
+.divisa-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.favorite-btn {
+  --padding-start: 0;
+  --padding-end: 0;
+  --color: var(--ion-color-medium);
+  transition: --color 0.3s ease;
+
+  &.active {
+    --color: #ffd700;
+  }
+
+  ion-icon {
+    font-size: 18px;
+  }
+}
+
 .divisa-name {
   font-size: 12px;
   color: var(--ion-color-medium);

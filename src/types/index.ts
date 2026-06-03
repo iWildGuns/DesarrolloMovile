@@ -19,3 +19,9 @@ export type IDivisas = {
   status: number;
   results: IResults[];
 };
+
+export type IFavoriteCurrency = {
+  codigo: string;
+  denominacion: string;
+  posicion: number;
+};

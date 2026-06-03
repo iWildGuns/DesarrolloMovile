@@ -7,13 +7,15 @@ import {
   IonCardContent,
   IonSearchbar,
   IonContent,
+  IonButton,
 } from '@ionic/angular/standalone';
 import { HttpClientService } from 'src/app/service/http-client';
+import { FavoritesService } from 'src/app/service/favorites.service';
 import { IDivisa, IResults } from 'src/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { addIcons } from 'ionicons';
-import { calendarOutline } from 'ionicons/icons';
+import { calendarOutline, star, starOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-all-currency-view',
@@ -28,21 +30,27 @@ import { calendarOutline } from 'ionicons/icons';
     FormsModule,
     IonSearchbar,
     IonContent,
+    IonButton,
   ],
 })
 export class AllCurrencyViewPage implements OnInit, OnDestroy {
   results: IResults | null = null;
   divisasFiltradas: IDivisa[] = [];
   searchTerm: string = '';
+  favoritosSet: Set<string> = new Set();
 
   private destroy$ = new Subject<void>();
 
-  constructor(private httpService: HttpClientService) {
-    addIcons({ calendarOutline });
+  constructor(
+    private httpService: HttpClientService,
+    private favoritesService: FavoritesService,
+  ) {
+    addIcons({ calendarOutline, star, starOutline });
   }
 
   ngOnInit(): void {
     this.loadCurrencyDetails();
+    this.loadFavorites();
   }
 
   ngOnDestroy(): void {
@@ -60,6 +68,17 @@ export class AllCurrencyViewPage implements OnInit, OnDestroy {
       });
   }
 
+  private loadFavorites(): void {
+    this.favoritesService
+      .getFavorites()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (favorites) => {
+          this.favoritosSet = new Set(favorites.map((f) => f.codigo));
+        },
+      });
+  }
+
   filtrar(): void {
     const term = this.searchTerm.toLowerCase();
     this.divisasFiltradas = (this.results?.detalle ?? []).filter(
@@ -67,6 +86,28 @@ export class AllCurrencyViewPage implements OnInit, OnDestroy {
         divisa.codigoMoneda.toLowerCase().includes(term) ||
         divisa.descripcion.toLowerCase().includes(term),
     );
+  }
+
+  isFavorite(codigoMoneda: string): boolean {
+    return this.favoritosSet.has(codigoMoneda);
+  }
+
+  toggleFavorite(divisa: IDivisa): void {
+    const codigo = divisa.codigoMoneda;
+
+    if (this.isFavorite(codigo)) {
+      this.favoritesService
+        .removeFavorite(codigo)
+        .catch((error) => console.error('Error removiendo favorito:', error));
+    } else {
+      this.favoritesService
+        .addFavorite({
+          codigo,
+          denominacion: divisa.descripcion,
+          posicion: 0,
+        })
+        .catch((error) => console.error('Error agregando favorito:', error));
+    }
   }
 
   get conCotizacion(): number {
