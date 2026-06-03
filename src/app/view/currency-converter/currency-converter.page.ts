@@ -1,21 +1,9 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {
-  IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-} from '@ionic/angular/standalone';
-import {
-  ICotizaciones,
-  IDivisa,
-  IDivisas,
-  IResults,
-  IResultsResponse,
-} from 'src/types';
-import { HttpClientService } from 'src/app/service/http-client';
 import { IonicModule } from '@ionic/angular';
+import { HttpClientService } from 'src/app/service/http-client';
+import { IDivisas, IResults } from 'src/types';
 
 @Component({
   selector: 'app-currency-converter',

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClientService } from 'src/app/service/http-client';
-import { IResults, IDetalle } from 'src/types';
+import { IResults, IDivisa } from 'src/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ export class CurrencyPage implements OnInit, OnDestroy {
   currencies: IResults[] = [];
   filteredCurrencies: IResults[] = [];
   selectedCurrency: IResults | undefined = undefined;
-  quotation: IDetalle | undefined = undefined;
+  quotation: IDivisa | undefined = undefined;
 
   searchTerm: string = '';
   selectedDate: string = this.getLocalDate();
@@ -110,7 +110,7 @@ export class CurrencyPage implements OnInit, OnDestroy {
     }
 
     const currencyFound = resp.results.detalle.find(
-      (c: IDetalle) => c.codigoMoneda === this.selectedCurrency?.codigo,
+      (c: IDivisa) => c.codigoMoneda === this.selectedCurrency?.codigo,
     );
 
     if (!currencyFound) {
