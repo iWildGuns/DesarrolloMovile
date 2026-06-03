@@ -69,7 +69,7 @@ export class MenuComponent {
   // ============ MÉTODOS AUXILIARES ============
   /*
    * /*Navegar a la pagina de cotizaciones entre dos fechas */
-navegarACurrencyConverter(): void {
+  navegarACurrencyConverter(): void {
     this.router.navigate(['/currency-converter']);
     this.cerrarMenu();
   }
