@@ -130,6 +130,7 @@ export class CurrenciesBetweenDatesPage implements OnInit {
       },
     });
   }
+
   filterCurrencies(event: any) {
     const value = event.detail.value?.toLowerCase() || '';
     if (!value.trim()) {
@@ -144,6 +145,7 @@ export class CurrenciesBetweenDatesPage implements OnInit {
     );
     this.showResults = true;
   }
+
   seleccionarDivisa(divisa: IDivisa) {
     console.log(divisa);
     this.divisaSeleccionada = divisa;

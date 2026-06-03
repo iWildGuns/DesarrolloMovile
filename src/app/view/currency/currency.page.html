@@ -23,9 +23,14 @@
     </ng-template>
   </ion-modal>
 
-  <ion-card *ngIf="quotation">
+  <div *ngIf="isLoading" class="ion-text-center ion-padding">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Buscando cotización...</p>
+  </div>
+
+  <ion-card *ngIf="quotation && !isLoading">
     <ion-card-header>
-      <ion-card-title> {{ selectedCurrency?.codigo }} </ion-card-title>
+      <ion-card-title> {{ selectedCurrency?.denominacion }} </ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
@@ -42,6 +47,7 @@
   <ion-searchbar
     placeholder="Buscar moneda"
     [(ngModel)]="searchTerm"
+    debounce="300"
     (ionInput)="filterCurrencies($event)"
   >
   </ion-searchbar>
@@ -49,7 +55,7 @@
   <ion-list>
     <ion-item
       button
-      *ngFor="let currency of filteredCurrencies"
+      *ngFor="let currency of filteredCurrencies; trackBy: trackByFn"
       (click)="selectCurrency(currency)"
     >
       {{ currency.codigo }} - {{ currency.denominacion }}

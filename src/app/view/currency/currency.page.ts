@@ -1,9 +1,9 @@
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { HttpClientService } from 'src/app/service/http-client';
-import { IResults, IDivisa } from 'src/types';
+import { IResults, IDivisa, IDivisas } from 'src/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -14,11 +14,12 @@ import { takeUntil } from 'rxjs/operators';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule],
 })
-export class CurrencyPage implements OnInit, OnDestroy {
+export class CurrencyPage implements OnDestroy {
   currencies: IResults[] = [];
   filteredCurrencies: IResults[] = [];
   selectedCurrency: IResults | undefined = undefined;
   quotation: IDivisa | undefined = undefined;
+  isLoading: boolean = false;
 
   searchTerm: string = '';
   selectedDate: string = this.getLocalDate();
@@ -28,7 +29,7 @@ export class CurrencyPage implements OnInit, OnDestroy {
 
   constructor(private httpService: HttpClientService) {}
 
-  ngOnInit(): void {
+  ionViewWillEnter(): void {
     this.loadCurrencies();
   }
 
@@ -49,6 +50,7 @@ export class CurrencyPage implements OnInit, OnDestroy {
 
   private loadQuotation(): void {
     if (!this.selectedCurrency) return;
+    this.isLoading = true;
 
     const formattedDate = this.selectedDate.split('T')[0];
 
@@ -56,18 +58,25 @@ export class CurrencyPage implements OnInit, OnDestroy {
       .getCurrencyByDate(formattedDate)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (resp) => this.handleQuotationResponse(resp),
-        error: () =>
+        next: (resp) => {
+          this.handleQuotationResponse(resp);
+          this.isLoading = false;
+        },
+        error: () => {
           this.handleError(
             'Ocurrió un error al obtener la cotización. No se pueden obtener cotizaciones posteriores al día de la fecha.',
-          ),
+          );
+          this.isLoading = false;
+        },
       });
   }
 
   filterCurrencies(event: any): void {
-    const value = event.target.value.toLowerCase();
-    this.filteredCurrencies = this.currencies.filter((currency) =>
-      currency.codigo?.toLowerCase().includes(value),
+    const value = event.detail.value || '';
+
+    this.filteredCurrencies = this.httpService.filterCurrencies(
+      this.currencies,
+      value,
     );
   }
 
@@ -88,28 +97,30 @@ export class CurrencyPage implements OnInit, OnDestroy {
     return localDate.toISOString();
   }
 
-  private handleCurrenciesResponse(resp: any): void {
+  private handleCurrenciesResponse(resp: IDivisas): void {
     this.currencies = resp.results;
     this.filteredCurrencies = this.currencies;
 
-    this.selectedCurrency = this.currencies.find((c) =>
-      c.codigo?.toLowerCase().includes('usd'),
-    );
+    this.selectedCurrency = this.currencies.find((c) => c.codigo === 'USD');
 
     this.loadQuotation();
   }
 
-  private handleQuotationResponse(resp: any): void {
+  private handleQuotationResponse(resp: IDivisas): void {
     this.errorMessage = '';
 
-    if (!resp.results?.fecha || !resp.results?.detalle?.length) {
+    if (
+      !resp.results ||
+      !('fecha' in resp.results) ||
+      !(resp.results as any)?.detalle?.length
+    ) {
       this.quotation = undefined;
       this.errorMessage =
         'No hay cotizaciones disponibles para la fecha seleccionada. La fecha debe corresponder a un día hábil.';
       return;
     }
 
-    const currencyFound = resp.results.detalle.find(
+    const currencyFound = (resp.results as any).detalle.find(
       (c: IDivisa) => c.codigoMoneda === this.selectedCurrency?.codigo,
     );
 
@@ -126,5 +137,9 @@ export class CurrencyPage implements OnInit, OnDestroy {
   private handleError(message: string): void {
     this.quotation = undefined;
     this.errorMessage = message;
+  }
+
+  trackByFn(index: number, item: IResults): string {
+    return item.codigo || index.toString();
   }
 }
