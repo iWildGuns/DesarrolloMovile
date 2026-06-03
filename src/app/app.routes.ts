@@ -51,8 +51,4 @@ export const routes: Routes = [
     path: '**',
     redirectTo: '/home',
   },
-  // {
-  //   path: 'currency-converter',
-  //   loadComponent: () => import('./view/currency-converter/currency-converter.page').then( m => m.CurrencyConverterPage)
-  // },
 ];
