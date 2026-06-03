@@ -35,11 +35,6 @@ export class HttpClientService {
 
     const data = this.httpClient.get<ICurrencyByDate>(url);
 
-<<<<<<< HEAD
-    console.log(url);
-    return data;
-  }
-=======
   console.log(url); 
   return data;
 }
@@ -53,5 +48,4 @@ getLastCurrencyQuote(moneda: string):Observable<ICotizaciones> {
 
 }
 
->>>>>>> iGunsRodri-FeatureCotizacion
 }
