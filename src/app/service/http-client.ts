@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IDivisas, ICotizaciones } from 'src/types';
-import { ICurrencyByDate, IResults } from 'src/types/index';
+import { ICurrencyByDate } from 'src/types/index';
 
 @Injectable({
   providedIn: 'root',
@@ -35,23 +35,12 @@ export class HttpClientService {
 
     const data = this.httpClient.get<ICurrencyByDate>(url);
 
-<<<<<<< HEAD
     console.log(url);
     return data;
   }
-=======
-  console.log(url); 
-  return data;
-}
-getLastCurrencyQuote(moneda: string):Observable<ICotizaciones> {
-
-
-  return this.httpClient.get<ICotizaciones>(
-    `${this.API_URL}/Cotizaciones/${moneda}?limit=10`
-  );
-
-
-}
-
->>>>>>> iGunsRodri-FeatureCotizacion
+  getLastCurrencyQuote(moneda: string): Observable<ICotizaciones> {
+    return this.httpClient.get<ICotizaciones>(
+      `${this.API_URL}/Cotizaciones/${moneda}?limit=10`,
+    );
+  }
 }

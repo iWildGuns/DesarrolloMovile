@@ -1,73 +1,54 @@
 <ion-content class="ion-padding">
   <h1>Conversor de Divisas</h1>
-  <!-- Selección de moneda -->
-  <!-- <ion-item>
-    <ion-label position="stacked">
-      Moneda
-    </ion-label>
-    <ion-select
-      [(ngModel)]="moneda"
-      interface="popover"
-      placeholder="Seleccione una moneda">
-      <ion-select-option
-        *ngFor="let divisa of divisas"
-        [value]="divisa.codigo">
-        {{ divisa.codigo }} - {{ divisa.denominacion }}
-      </ion-select-option>
-    </ion-select>
-  </ion-item> -->
   <ion-item>
-  <ion-searchbar
-    placeholder="Seleccione moneda"
-    [(ngModel)]="textoBuscado"
-    (ionInput)="filtrarMonedas($event)">
-  </ion-searchbar>
-</ion-item>
-
-<ion-list *ngIf="monedasFiltradas.length > 0">
-  <ion-item
-    button
-    *ngFor="let moneda of monedasFiltradas"
-    (click)="seleccionarMoneda(moneda)">
-
-    <ion-label>
-      <h2>{{ moneda.codigo }}</h2>
-      <p>{{ moneda.denominacion }}</p>
-    </ion-label>
-
+    <ion-searchbar
+      placeholder="Seleccione moneda"
+      [(ngModel)]="textoBuscado"
+      (ionInput)="filtrarMonedas($event)"
+    >
+    </ion-searchbar>
   </ion-item>
-</ion-list>
 
-<ion-item *ngIf="monedaSeleccionada">
-  <ion-label>
-    Moneda seleccionada:
-    <strong>{{ monedaSeleccionada.codigo }} - {{ monedaSeleccionada.denominacion }}</strong>
-  </ion-label>
-</ion-item>
+  <ion-list *ngIf="monedasFiltradas.length > 0">
+    <ion-item
+      button
+      *ngFor="let moneda of monedasFiltradas"
+      (click)="seleccionarMoneda(moneda)"
+    >
+      <ion-label>
+        <h2>{{ moneda.codigo }}</h2>
+        <p>{{ moneda.denominacion }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-item *ngIf="monedaSeleccionada">
+    <ion-label>
+      Moneda seleccionada:
+      <strong
+        >{{ monedaSeleccionada.codigo }} - {{ monedaSeleccionada.denominacion
+        }}</strong
+      >
+    </ion-label>
+  </ion-item>
   <!-- Importe -->
   <ion-item>
-    <ion-label position="stacked">
-      Importe
-    </ion-label>
+    <ion-label position="stacked"> Importe </ion-label>
     <ion-input
       type="number"
       [(ngModel)]="importe"
-      placeholder="Ingrese un importe">
+      placeholder="Ingrese un importe"
+    >
     </ion-input>
   </ion-item>
   <!-- Botón -->
-  <ion-button
-    expand="block"
-    class="ion-margin-top"
-    (click)="convertir()">
+  <ion-button expand="block" class="ion-margin-top" (click)="convertir()">
     Convertir a Pesos
   </ion-button>
   <!-- Resultado -->
   <ion-card *ngIf="resultado > 0" class="ion-margin-top">
     <ion-card-header>
-      <ion-card-title>
-        Resultado
-      </ion-card-title>
+      <ion-card-title> Resultado </ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <p>

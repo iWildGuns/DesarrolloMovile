@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { HttpClientService } from 'src/app/service/http-client';
 import { Chart } from 'chart.js/auto';
 import { IDivisa } from 'src/types';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 
 @Component({
   selector: 'app-currencies-between-dates',
@@ -14,7 +16,6 @@ import { IDivisa } from 'src/types';
   imports: [CommonModule, FormsModule, IonicModule],
 })
 export class CurrenciesBetweenDatesPage implements OnInit {
-  constructor(private httpClientService: HttpClientService) {}
   filteredDivisas: IDivisa[] = [];
   vistaSeleccionada: string = 'lista';
   chart: any;
@@ -27,6 +28,10 @@ export class CurrenciesBetweenDatesPage implements OnInit {
   fechaDesde: string = '';
   fechaHasta: string = '';
   data: any;
+  disable: boolean = true;
+
+  constructor(private httpClientService: HttpClientService) {}
+
   ngOnInit() {
     const hoy = new Date();
     const anterior = new Date();
@@ -69,6 +74,7 @@ export class CurrenciesBetweenDatesPage implements OnInit {
             this.chart.destroy();
           }
           this.crearGrafico();
+          this.disable = false;
         },
         error: (err) => {
           console.error(err);
@@ -145,5 +151,29 @@ export class CurrenciesBetweenDatesPage implements OnInit {
     this.filteredDivisas = [];
     this.showResults = false;
     this.searchTerm = `${divisa.codigoMoneda} - ${divisa.descripcion}`;
+  }
+
+  async descargarGraficoNativo() {
+    const canvas = document.getElementById('miGrafico') as HTMLCanvasElement;
+    const imageURL = canvas.toDataURL('image/png');
+    const base64Data = imageURL.split(',')[1];
+    const nombreArchivo = `mi_grafico_${new Date().getTime()}.png`;
+
+    try {
+      const resultado = await Filesystem.writeFile({
+        path: nombreArchivo,
+        data: base64Data,
+        directory: Directory.Cache,
+      });
+
+      await Share.share({
+        title: 'Mi Grafico',
+        text: 'Aqui tienes los resultados del grafico.',
+        url: resultado.uri,
+        dialogTitle: 'Guardar o Compartir Grafico',
+      });
+    } catch (error) {
+      console.error('Error al guardar o compartir el grafico', error);
+    }
   }
 }
