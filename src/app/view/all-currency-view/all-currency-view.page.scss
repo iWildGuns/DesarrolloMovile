@@ -6,9 +6,10 @@
 // Header
 .header-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin: 20px;
+
 }
 
 .section-title {
@@ -20,13 +21,14 @@
 
 .fecha-tag {
   display: flex;
-  align-items: center;
+  align-items: justify;
+  justify-content: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: 16px;
   color: var(--ion-color-medium);
 
   ion-icon {
-    font-size: 16px;
+    font-size: 20px;
   }
 }
 
@@ -59,17 +61,18 @@
 }
 
 // Buscador
-ion-searchbar {
-  --background: var(--ion-color-step-50);
-  --border-radius: 12px;
-  padding: 0 0 16px;
-}
+// ion-searchbar {
+//   --background: var(--ion-color-step-50);
+//   --border-radius: 12px;
+//   padding: 0 0 16px;
+// }
 
 // Grid
 .divisa-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 12px;
+  padding: 5px;
 }
 
 // Cards
@@ -79,9 +82,11 @@ ion-searchbar {
   --background: var(--ion-color-step-50);
   box-shadow: none;
   border: 1px solid var(--ion-color-step-100);
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px;
 
   ion-card-content {
     padding: 14px;
+    border-radius: 12px;
   }
 }
 
@@ -98,12 +103,11 @@ ion-searchbar {
 }
 
 .divisa-name {
-  font-size: 12px;
+  font-size: 15px;
   color: var(--ion-color-medium);
   margin: 0 0 10px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  text-wrap: balance;
 }
 
 .divisa-values {
@@ -126,7 +130,7 @@ ion-searchbar {
 }
 
 .divisa-value {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--ion-text-color);
 }

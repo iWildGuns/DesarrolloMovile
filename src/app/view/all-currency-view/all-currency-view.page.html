@@ -1,34 +1,35 @@
+<ion-header [translucent]="false" class="sticky">
+  <ion-toolbar>
+    <ion-title>Divisas disponibles</ion-title>
+  </ion-toolbar>
+</ion-header>
+<div class="header-row">
+  <span class="fecha-tag">
+    <ion-icon name="calendar-outline"></ion-icon>
+    {{ results?.fecha | date: 'fullDate'}}
+  </span>
+</div>
+
+<div class="stats-row">
+  <div class="stat-card">
+    <p class="stat-label">Total divisas</p>
+    <p class="stat-value">{{ results?.detalle?.length }}</p>
+  </div>
+  <div class="stat-card">
+    <p class="stat-label">Con cotización</p>
+    <p class="stat-value">{{ conCotizacion }}</p>
+  </div>
+  <div class="stat-card">
+    <p class="stat-label">Sin cotización</p>
+    <p class="stat-value">{{ sinCotizacion }}</p>
+  </div>
+</div>
+
+<ion-searchbar [animated]="true" [(ngModel)]="searchTerm" placeholder="Buscar por código o descripción..."
+  (ionInput)="filtrar()">
+</ion-searchbar>
+
 <ion-content>
-  <div class="header-row">
-    <p class="section-title">Divisas disponibles</p>
-    <span class="fecha-tag">
-      <ion-icon name="calendar-outline"></ion-icon>
-      {{ results?.fecha }}
-    </span>
-  </div>
-
-  <div class="stats-row">
-    <div class="stat-card">
-      <p class="stat-label">Total divisas</p>
-      <p class="stat-value">{{ results?.detalle?.length }}</p>
-    </div>
-    <div class="stat-card">
-      <p class="stat-label">Con cotización</p>
-      <p class="stat-value">{{ conCotizacion }}</p>
-    </div>
-    <div class="stat-card">
-      <p class="stat-label">Sin cotización</p>
-      <p class="stat-value">{{ sinCotizacion }}</p>
-    </div>
-  </div>
-
-  <ion-searchbar
-    [(ngModel)]="searchTerm"
-    placeholder="Buscar por código o descripción..."
-    (ionInput)="filtrar()"
-  >
-  </ion-searchbar>
-
   <div class="divisa-grid">
     @for(divisa of divisasFiltradas; track divisa.id) {
     <ion-card class="divisa-card">
@@ -37,16 +38,13 @@
         <p class="divisa-name">{{ divisa.descripcion }}</p>
         <div class="divisa-values">
           <div class="divisa-row">
-            <span class="divisa-label">Tipo pase</span>
-            <span class="divisa-value"
-              >{{ divisa.tipoPase | number:'1.4-4' }}</span
-            >
+            <span class="divisa-value">1 {{divisa.codigoMoneda | currencySymbol}} = {{ divisa.tipoPase | number:'1.2-4'
+              }} US$</span>
           </div>
           <div class="divisa-row">
-            <span class="divisa-label">Cotización</span>
-            <span class="divisa-value">
+            <span class="divisa-value">1 {{divisa.codigoMoneda | currencySymbol}} =
               {{ divisa.tipoCotizacion > 0 ? (divisa.tipoCotizacion |
-              number:'1.2-2') : '—' }}
+              number:'1.2-2') : '—' }} AR$
             </span>
           </div>
         </div>

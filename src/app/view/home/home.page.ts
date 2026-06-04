@@ -14,12 +14,7 @@ import { FormsModule } from '@angular/forms';
   imports: [IonicModule, CommonModule, FormsModule],
 })
 export class HomePage {
-  // ============ PROPIEDADES ============
   mostrar: boolean = false;
 
-  // ============ CONSTRUCTOR ============
   constructor() {}
-
-  // ============ LIFECYCLE ============
-  // Implementar métodos según sea necesario
 }
