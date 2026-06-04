@@ -13,12 +13,16 @@ import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import {
+  initializeFirestore,
+  provideFirestore,
+  getFirestore,
+} from '@angular/fire/firestore';
 import { authConfig } from './auth/auth.config';
 import { provideAuth as provideAuth_alias } from 'angular-auth-oidc-client';
-import { environment } from 'src/environments/environment';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { getApp } from '@angular/fire/app';
 
 registerLocaleData(localeEs);
 
@@ -40,7 +44,12 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
-    provideFirestore(() => getFirestore()),
+    provideFirestore(() => {
+      const firestore = initializeFirestore(getApp(), {
+        experimentalForceLongPolling: true,
+      });
+      return firestore;
+    }),
     provideAuth(() => getAuth()),
     provideAuth_alias(authConfig),
   ],

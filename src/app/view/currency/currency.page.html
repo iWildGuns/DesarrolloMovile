@@ -1,53 +1,102 @@
-<ion-header [translucent]="false" class="sticky">
+<ion-header [translucent]="false">
   <ion-toolbar>
     <ion-title>Cotizaciones</ion-title>
   </ion-toolbar>
-  <div class="sticky">
-    <ion-item>
-      <ion-label>Fecha</ion-label>
+</ion-header>
 
-      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+<ion-content class="ion-padding">
+  <!-- Selector de Fecha -->
+  <div class="date-section">
+    <ion-item class="date-item">
+      <ion-label>Seleccionar Fecha</ion-label>
+      <ion-icon slot="start" name="calendar"></ion-icon>
+      <ion-datetime-button
+        datetime="datepicker"
+        slot="end"
+      ></ion-datetime-button>
     </ion-item>
     <ion-modal [keepContentsMounted]="true">
       <ng-template>
-        <ion-datetime id="datetime" presentation="date" [isDateEnabled]="isWeekday" [max]="maxDate"
-          [value]="selectedDate" locale="es-AR" (ionChange)="changeDate($event)">
+        <ion-datetime
+          id="datepicker"
+          presentation="date"
+          [isDateEnabled]="isWeekday"
+          [max]="maxDate"
+          [value]="selectedDate"
+          locale="es-AR"
+          (ionChange)="changeDate($event)"
+        >
         </ion-datetime>
       </ng-template>
     </ion-modal>
+    <p class="date-display">{{ selectedDate | date: 'dd/MM/yyyy' }}</p>
+  </div>
 
-    <div *ngIf="isLoading" class="ion-text-center ion-padding">
-      <ion-spinner name="crescent"></ion-spinner>
-      <p>Buscando cotización...</p>
-    </div>
+  <!-- Spinner de carga -->
+  <div *ngIf="isLoading" class="loading-section">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando cotización...</p>
+  </div>
 
-    <ion-card *ngIf="quotation && !isLoading">
-      <ion-card-header>
-        <ion-card-title> {{ selectedCurrency?.denominacion }} </ion-card-title>
-      </ion-card-header>
+  <!-- Tarjeta de Cotización -->
+  <ion-card *ngIf="quotation && !isLoading" class="quotation-card">
+    <ion-card-header>
+      <ion-card-title>{{ selectedCurrency?.denominacion }}</ion-card-title>
+      <p class="currency-code">{{ selectedCurrency?.codigo }}</p>
+    </ion-card-header>
 
-      <ion-card-content>
-        <h2>1 {{ quotation.codigoMoneda | currencySymbol}} = {{ quotation.tipoCotizacion }} AR$</h2>
+    <ion-card-content>
+      <div class="quotation-row">
+        <span class="label"
+          >1 {{ quotation.codigoMoneda | currencySymbol}}</span
+        >
+        <span class="value">=</span>
+        <span class="amount">{{ quotation.tipoCotizacion }} AR$</span>
+      </div>
 
-        <h2>1 {{ quotation.codigoMoneda | currencySymbol}} = {{ quotation.tipoPase }} US$</h2>
-      </ion-card-content>
-    </ion-card>
+      <div class="quotation-row">
+        <span class="label"
+          >1 {{ quotation.codigoMoneda | currencySymbol}}</span
+        >
+        <span class="value">=</span>
+        <span class="amount">{{ quotation.tipoPase }} US$</span>
+      </div>
+    </ion-card-content>
+  </ion-card>
 
-    <ion-text color="danger" *ngIf="errorMessage">
-      <p class="ion-padding-top">{{ errorMessage }}</p>
-    </ion-text>
+  <!-- Mensaje de error -->
+  <ion-text color="danger" *ngIf="errorMessage && !isLoading">
+    <p class="error-message">{{ errorMessage }}</p>
+  </ion-text>
 
-    <ion-searchbar animated="true" autofocus="true" placeholder="Buscar moneda" [(ngModel)]="searchTerm" debounce="300"
-      (ionInput)="filterCurrencies($event)">
+  <!-- Búsqueda de monedas -->
+  <div class="search-section">
+    <ion-searchbar
+      animated="true"
+      placeholder="Buscar moneda..."
+      [(ngModel)]="searchTerm"
+      debounce="300"
+      (ionInput)="filterCurrencies($event)"
+    >
     </ion-searchbar>
   </div>
-</ion-header>
 
-<ion-content>
-
-  <ion-list>
-    <ion-item button *ngFor="let currency of filteredCurrencies; trackBy: trackByFn" (click)="selectCurrency(currency)">
-      {{ currency.codigo }} - {{ currency.denominacion }}
+  <!-- Lista de monedas -->
+  <ion-list *ngIf="filteredCurrencies.length > 0" class="currencies-list">
+    <ion-item
+      button
+      *ngFor="let currency of filteredCurrencies; trackBy: trackByFn"
+      (click)="selectCurrency(currency)"
+      [class.selected]="selectedCurrency?.codigo === currency.codigo"
+    >
+      <ion-label>
+        <strong>{{ currency.codigo }}</strong>
+        <p>{{ currency.denominacion }}</p>
+      </ion-label>
     </ion-item>
   </ion-list>
+
+  <div *ngIf="filteredCurrencies.length === 0 && searchTerm" class="no-results">
+    <p>No se encontraron monedas</p>
+  </div>
 </ion-content>

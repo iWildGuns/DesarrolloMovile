@@ -1,7 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonSegment,
+  IonSegmentButton,
+  IonLabel,
+  IonSearchbar,
+  IonList,
+  IonItem,
+  IonInput,
+  IonPopover,
+  IonDatetime,
+  IonButton,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
 import { HttpClientService } from 'src/app/service/http-client';
 import { Chart } from 'chart.js/auto';
 import { IDivisa, IDivisas } from 'src/types';
@@ -12,13 +28,33 @@ import { shareSocialOutline } from 'ionicons/icons';
 import { CurrencySymbolPipe } from 'src/app/shared/pipes/currency-symbol-pipe';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-currencies-between-dates',
   templateUrl: './currencies-between-dates.page.html',
   styleUrls: ['./currencies-between-dates.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule, CurrencySymbolPipe],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CurrencySymbolPipe,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonSegment,
+    IonSegmentButton,
+    IonLabel,
+    IonSearchbar,
+    IonList,
+    IonItem,
+    IonInput,
+    IonPopover,
+    IonDatetime,
+    IonButton,
+    IonIcon,
+  ],
 })
 export class CurrenciesBetweenDatesPage implements OnInit {
   divisas: IDivisa[] = [];
@@ -83,24 +119,6 @@ export class CurrenciesBetweenDatesPage implements OnInit {
     }
   }
 
-  // buscarCotizaciones() {
-  //   this.httpClientService
-  //     .getCurrenciesBetweenDate(this.moneda, this.fechaDesde, this.fechaHasta)
-  //     .subscribe({
-  //       next: (res) => {
-  //         this.data = res;
-  //         this.disable = false;
-
-  //         // Si el usuario ya está parado en la pestaña del gráfico, lo dibujamos inmediatamente
-  //         if (this.vistaSeleccionada === 'grafico') {
-  //           this.crearGrafico();
-  //         }
-  //       },
-  //       error: (err) => console.error(err),
-  //     });
-  // }
-
-
   buscarCotizaciones(): void {
     this.isLoading = true;
     this.httpClientService
@@ -122,7 +140,7 @@ export class CurrenciesBetweenDatesPage implements OnInit {
       this.crearGrafico();
     }
   }
-  
+
   // Se ejecuta cada vez que el usuario cambia entre las pestañas Listado y Gráfico
   segmentChanged() {
     if (this.vistaSeleccionada === 'grafico' && this.data) {
@@ -173,24 +191,7 @@ export class CurrenciesBetweenDatesPage implements OnInit {
     });
   }
 
-  // cargarDivisas() {
-  //   this.httpClientService.getDivisa().subscribe({
-  //     next: (res: IDivisas) => {
-  //       this.divisas = res.results.map(
-  //         (item: any): IDivisa => ({
-  //           id: item.id,
-  //           codigoMoneda: item.codigo,
-  //           descripcion: item.denominacion,
-  //           tipoPase: item.tipoPase,
-  //           tipoCotizacion: item.tipoCotizacion,
-  //         }),
-  //       );
-  //     },
-  //     error: (err) => console.error(err),
-  //   });
-  // }
-
-   private cargarDivisas(): void {
+  private cargarDivisas(): void {
     this.httpClientService
       .getDivisa()
       .pipe(takeUntil(this.destroy$))
@@ -217,26 +218,23 @@ export class CurrenciesBetweenDatesPage implements OnInit {
     this.isLoading = false;
   }
 
-  // REFACTORIZADO: Ahora utiliza tu función compartida del servicio
   filterCurrencies(event: any) {
     const value = event.detail.value || '';
 
     console.log(this.divisas);
-    
+
     if (!value.trim()) {
       this.filteredDivisas = [];
       this.showResults = false;
       return;
     }
 
-    // Invocamos el filtro inteligente centralizado
     this.filteredDivisas = this.httpClientService.filterCurrencies(
       this.divisas,
       value,
     );
     this.showResults = true;
     console.log(this.filteredDivisas);
-    
   }
 
   seleccionarDivisa(divisa: IDivisa) {
@@ -253,23 +251,30 @@ export class CurrenciesBetweenDatesPage implements OnInit {
 
     const imageURL = canvas.toDataURL('image/png');
     const base64Data = imageURL.split(',')[1];
-    const nombreArchivo = `mi_grafico_${new Date().getTime()}.png`;
+    const nombreArchivo = `cotizApp_${new Date().getTime()}.png`;
 
     try {
+      if (Capacitor.getPlatform() === 'android') {
+        await Filesystem.requestPermissions();
+      }
+      await Filesystem.writeFile({
+        path: `Pictures/${nombreArchivo}`,
+        data: base64Data,
+        directory: Directory.ExternalStorage,
+      });
+
+      alert('Gráfico guardado en Imágenes');
+    } catch (error) {
+      console.error('Error al guardar', error);
       const resultado = await Filesystem.writeFile({
         path: nombreArchivo,
         data: base64Data,
         directory: Directory.Cache,
       });
-
       await Share.share({
-        title: 'Mi Gráfico',
-        text: 'Aquí tienes los resultados del gráfico de CotizApp.',
+        title: 'Gráfico CotizApp',
         url: resultado.uri,
-        dialogTitle: 'Guardar o Compartir Gráfico',
       });
-    } catch (error) {
-      console.error('Error al guardar o compartir el gráfico', error);
     }
   }
 }

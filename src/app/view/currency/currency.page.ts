@@ -1,4 +1,23 @@
-import { IonicModule } from '@ionic/angular';
+import {
+  IonLabel,
+  IonDatetime,
+  IonDatetimeButton,
+  IonModal,
+  IonSpinner,
+  IonItem,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonText,
+  IonContent,
+  IonList,
+  IonSearchbar,
+  IonIcon,
+} from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, OnDestroy } from '@angular/core';
@@ -7,13 +26,39 @@ import { IResults, IDivisa, IDivisas } from 'src/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CurrencySymbolPipe } from 'src/app/shared/pipes/currency-symbol-pipe';
+import { addIcons } from 'ionicons';
+import { calendar } from 'ionicons/icons';
+
+addIcons({ calendar });
 
 @Component({
   selector: 'app-currency',
   templateUrl: './currency.page.html',
   styleUrls: ['./currency.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, CurrencySymbolPipe],
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonItem,
+    IonLabel,
+    IonDatetime,
+    IonDatetimeButton,
+    IonModal,
+    IonSpinner,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonText,
+    IonContent,
+    IonList,
+    IonSearchbar,
+    IonIcon,
+    CommonModule,
+    FormsModule,
+    CurrencySymbolPipe,
+  ],
 })
 export class CurrencyPage implements OnDestroy {
   currencies: IResults[] = [];
@@ -30,7 +75,9 @@ export class CurrencyPage implements OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private httpService: HttpClientService) {}
+  constructor(private httpService: HttpClientService) {
+    addIcons({ calendar });
+  }
 
   isWeekday = (dateString: string) => {
     const date = new Date(dateString);
@@ -97,7 +144,9 @@ export class CurrencyPage implements OnDestroy {
 
   changeDate(event: any): void {
     this.selectedDate = event.detail.value;
-    this.loadQuotation();
+    if (this.selectedCurrency) {
+      this.loadQuotation();
+    }
   }
 
   private getLocalDate(): string {

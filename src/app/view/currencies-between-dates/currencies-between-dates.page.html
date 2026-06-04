@@ -4,7 +4,6 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-
   <ion-segment [(ngModel)]="vistaSeleccionada" (ionChange)="segmentChanged()">
     <ion-segment-button value="lista">
       <ion-label>Listado</ion-label>
@@ -16,20 +15,31 @@
   </ion-segment>
 
   <ion-item lines="none">
-    <ion-searchbar [animated]="true" placeholder="Buscar divisa" [(ngModel)]="searchTerm" debounce="300"
-      (ionInput)="filterCurrencies($event)">
+    <ion-searchbar
+      [animated]="true"
+      placeholder="Buscar divisa"
+      [(ngModel)]="searchTerm"
+      debounce="300"
+      (ionInput)="filterCurrencies($event)"
+    >
     </ion-searchbar>
   </ion-item>
 
-  <ion-list *ngIf="showResults" style="
+  <ion-list
+    *ngIf="showResults"
+    style="
       max-height: 200px;
       overflow-y: auto;
       margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 8px;
-    ">
-    <ion-item *ngFor="let divisa of filteredDivisas" (click)="seleccionarDivisa(divisa)"
-      [color]="divisaSeleccionada?.id === divisa.id ? 'primary' : ''">
+    "
+  >
+    <ion-item
+      *ngFor="let divisa of filteredDivisas"
+      (click)="seleccionarDivisa(divisa)"
+      [color]="divisaSeleccionada?.id === divisa.id ? 'primary' : ''"
+    >
       <ion-label>
         <h2>{{ divisa.codigoMoneda }}</h2>
         <p>{{ divisa.descripcion }}</p>
@@ -67,12 +77,22 @@
 
   <ion-item>
     <ion-label position="stacked">Fecha desde nueva</ion-label>
-    <ion-input value="{{fechaDesde | date: 'dd/MM/yyyy' }}" id="fecha-input" class="input-fecha"></ion-input>
+    <ion-input
+      value="{{fechaDesde | date: 'dd/MM/yyyy' }}"
+      id="fecha-input"
+      class="input-fecha"
+    ></ion-input>
 
     <ion-popover trigger="fecha-input" size="cover">
       <ng-template>
-        <ion-datetime presentation="date" locale="es-AR" [(ngModel)]="fechaDesde" [max]="fechaActual"
-          [isDateEnabled]="isWeekday" (ionChange)="validarFechas()">
+        <ion-datetime
+          presentation="date"
+          locale="es-AR"
+          [(ngModel)]="fechaDesde"
+          [max]="fechaActual"
+          [isDateEnabled]="isWeekday"
+          (ionChange)="validarFechas()"
+        >
         </ion-datetime>
       </ng-template>
     </ion-popover>
@@ -80,18 +100,33 @@
 
   <ion-item>
     <ion-label position="stacked">Fecha hasta nueva</ion-label>
-    <ion-input value="{{fechaHasta | date: 'dd/MM/yyyy' }}" id="fecha-input2" class="input-fecha"></ion-input>
+    <ion-input
+      value="{{fechaHasta | date: 'dd/MM/yyyy' }}"
+      id="fecha-input2"
+      class="input-fecha"
+    ></ion-input>
 
     <ion-popover trigger="fecha-input2" size="cover">
       <ng-template>
-        <ion-datetime presentation="date" locale="es-AR" [(ngModel)]="fechaHasta" [min]="fechaDesde" [max]="fechaActual"
-          [isDateEnabled]="isWeekday" (ionChange)="validarFechas()">
+        <ion-datetime
+          presentation="date"
+          locale="es-AR"
+          [(ngModel)]="fechaHasta"
+          [min]="fechaDesde"
+          [max]="fechaActual"
+          [isDateEnabled]="isWeekday"
+          (ionChange)="validarFechas()"
+        >
         </ion-datetime>
       </ng-template>
     </ion-popover>
   </ion-item>
 
-  <ion-button expand="block" class="ion-margin-top" (click)="buscarCotizaciones()">
+  <ion-button
+    expand="block"
+    class="ion-margin-top"
+    (click)="buscarCotizaciones()"
+  >
     Buscar
   </ion-button>
 
@@ -108,7 +143,9 @@
           <ion-label>
             <h3>{{ d.codigoMoneda }} - {{ d.descripcion }}</h3>
             <p>1 {{d.codigoMoneda | currencySymbol}} = {{ d.tipoPase }} AR$</p>
-            <p style="font-weight: 500; color: var(--ion-color-success, #2dd36f)">
+            <p
+              style="font-weight: 500; color: var(--ion-color-success, #2dd36f)"
+            >
               1 {{d.codigoMoneda | currencySymbol}} = {{ d.tipoCotizacion }} US$
             </p>
           </ion-label>
@@ -122,8 +159,15 @@
       <canvas id="miGrafico"></canvas>
     </div>
 
-    <ion-button [disabled]="disable" expand="block" fill="outline" shape="round" color="medium" class="ion-margin-top"
-      (click)="descargarGraficoNativo()">
+    <ion-button
+      [disabled]="disable"
+      expand="block"
+      fill="outline"
+      shape="round"
+      color="medium"
+      class="ion-margin-top"
+      (click)="descargarGraficoNativo()"
+    >
       <ion-icon slot="start" name="share-social-outline"></ion-icon>
       Exportar Gráfico
     </ion-button>
