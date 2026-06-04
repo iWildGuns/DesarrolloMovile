@@ -1,34 +1,35 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Directory, Filesystem } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
+  IonButton,
   IonContent,
+  IonDatetime,
+  IonHeader,
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonPopover,
+  IonSearchbar,
   IonSegment,
   IonSegmentButton,
-  IonLabel,
-  IonSearchbar,
-  IonList,
-  IonItem,
-  IonInput,
-  IonPopover,
-  IonDatetime,
-  IonButton,
-  IonIcon,
+  IonTitle,
+  IonToolbar,
 } from '@ionic/angular/standalone';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { HttpClientService } from 'src/app/service/http-client';
 import { Chart } from 'chart.js/auto';
-import { IDivisa, IDivisas } from 'src/types';
-import { Filesystem, Directory } from '@capacitor/filesystem';
-import { Share } from '@capacitor/share';
 import { addIcons } from 'ionicons';
 import { shareSocialOutline } from 'ionicons/icons';
-import { CurrencySymbolPipe } from 'src/app/shared/pipes/currency-symbol-pipe';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { HttpClientService } from 'src/app/service/http-client';
+import { CurrencySymbolPipe } from 'src/app/shared/pipes/currency-symbol-pipe';
+import { IDivisa, IDivisas } from 'src/types';
+
 import { Capacitor } from '@capacitor/core';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-currencies-between-dates',
@@ -141,11 +142,8 @@ export class CurrenciesBetweenDatesPage implements OnInit {
     }
   }
 
-  // Se ejecuta cada vez que el usuario cambia entre las pestañas Listado y Gráfico
   segmentChanged() {
     if (this.vistaSeleccionada === 'grafico' && this.data) {
-      // Un mini timeout de 50ms le da tiempo al DOM de remover el [hidden]
-      // antes de que Chart.js calcule los tamaños del lienzo
       setTimeout(() => {
         this.crearGrafico();
       }, 50);
@@ -158,7 +156,7 @@ export class CurrenciesBetweenDatesPage implements OnInit {
     }
 
     const canvas = document.getElementById('miGrafico') as HTMLCanvasElement;
-    if (!canvas) return; // Control de seguridad por si el elemento no está en el DOM
+    if (!canvas) return;
 
     this.chart = new Chart(canvas, {
       type: 'line',
@@ -171,14 +169,14 @@ export class CurrenciesBetweenDatesPage implements OnInit {
               (x: any) => x.detalle[0].tipoCotizacion,
             ),
             tension: 0.3,
-            borderColor: '#3880ff', // Un color azul nativo de Ionic para que quede más lindo
+            borderColor: '#3880ff',
             backgroundColor: 'rgba(56, 128, 255, 0.1)',
           },
         ],
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false, // Permite que se adapte mejor a las pantallas de celulares
+        maintainAspectRatio: false,
         plugins: {
           title: {
             display: true,

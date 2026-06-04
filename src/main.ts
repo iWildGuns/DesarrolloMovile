@@ -6,15 +6,6 @@ import { awsconfig } from './aws-exports';
 
 Amplify.configure(awsconfig);
 
-bootstrapApplication(
-  AppComponent,
-  appConfig,
-  //   {
-  //   providers: [
-  //     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-  //     provideIonicAngular(),
-  //     provideRouter(routes, withPreloading(PreloadAllModules)),
-  //     provideHttpClient(),
-  //   ],
-  // }
-).catch((err) => console.error(err));
+bootstrapApplication(AppComponent, appConfig).catch((err) =>
+  console.error(err),
+);

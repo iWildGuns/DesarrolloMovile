@@ -17,7 +17,21 @@ import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/service/auth-service';
 import { ThemeService } from 'src/app/service/theme';
 import { addIcons } from 'ionicons';
-import { logOutOutline, homeOutline, cashOutline, calendarNumberOutline, calculatorOutline, calendarOutline, moon, sunny, gridOutline, restaurantOutline, receiptOutline, fastFoodOutline, cardOutline } from 'ionicons/icons';
+import {
+  logOutOutline,
+  homeOutline,
+  cashOutline,
+  calendarNumberOutline,
+  calculatorOutline,
+  calendarOutline,
+  moon,
+  sunny,
+  gridOutline,
+  restaurantOutline,
+  receiptOutline,
+  fastFoodOutline,
+  cardOutline,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-menu',
@@ -41,14 +55,28 @@ export class MenuComponent {
   @Input() contentId: string = 'main-content';
   @Input() menuId: string = 'main-menu';
   public isLoggedIn$!: Observable<boolean>;
-  public themeService = inject(ThemeService)
+  public themeService = inject(ThemeService);
 
   constructor(
     private router: Router,
     private menuController: MenuController,
     private authService: AuthService,
   ) {
-    addIcons({ logOutOutline, homeOutline, cashOutline, calendarNumberOutline, calendarOutline, calculatorOutline, moon, sunny, 'grid-outline': gridOutline, 'restaurant-outline': restaurantOutline, 'receipt-outline': receiptOutline, 'fast-food-outline': fastFoodOutline, 'card-outline': cardOutline });
+    addIcons({
+      logOutOutline,
+      homeOutline,
+      cashOutline,
+      calendarNumberOutline,
+      calendarOutline,
+      calculatorOutline,
+      moon,
+      sunny,
+      'grid-outline': gridOutline,
+      'restaurant-outline': restaurantOutline,
+      'receipt-outline': receiptOutline,
+      'fast-food-outline': fastFoodOutline,
+      'card-outline': cardOutline,
+    });
   }
 
   ngOnInit(): void {
@@ -74,26 +102,17 @@ export class MenuComponent {
     this.router.navigate(['login']);
     this.cerrarMenu();
   }
-  /*Navegar a la pagina de cotizaciones entre dos fechas */
+
   navegarACotizacionesEntreFechas(): void {
     this.router.navigate(['app-currencies-between-dates']);
     this.cerrarMenu();
   }
-  // ============ MÉTODOS AUXILIARES ============
-  /*Navegar a la pagina de cotizaciones entre dos fechas */
+
   navegarACurrencyConverter(): void {
     this.router.navigate(['/currency-converter']);
     this.cerrarMenu();
   }
-  // ============ MÉTODOS AUXILIARES ============
-  /**
-   * Cierra el menú lateral
-   */
 
-  // logOut(): void {
-  //   this.authService.logout();
-  //   this.cerrarMenu();
-  // }
   handleAuthAction(isLoggedIn: boolean) {
     if (isLoggedIn) {
       this.authService.logout();

@@ -4,14 +4,21 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-
   <ion-item>
-    <ion-searchbar placeholder="Seleccione moneda" [(ngModel)]="textoBuscado" (ionInput)="filtrarMonedas($event)">
+    <ion-searchbar
+      placeholder="Seleccione moneda"
+      [(ngModel)]="textoBuscado"
+      (ionInput)="filtrarMonedas($event)"
+    >
     </ion-searchbar>
   </ion-item>
 
   <ion-list *ngIf="monedasFiltradas.length > 0">
-    <ion-item button *ngFor="let moneda of monedasFiltradas" (click)="seleccionarMoneda(moneda)">
+    <ion-item
+      button
+      *ngFor="let moneda of monedasFiltradas"
+      (click)="seleccionarMoneda(moneda)"
+    >
       <ion-label>
         <h2>{{ moneda.codigo }}</h2>
         <p>{{ moneda.denominacion }}</p>
@@ -22,15 +29,22 @@
   <ion-item *ngIf="monedaSeleccionada">
     <ion-label>
       Moneda seleccionada:
-      <strong>{{ monedaSeleccionada.codigo }} - {{ monedaSeleccionada.denominacion
-        }}</strong>
+      <strong
+        >{{ monedaSeleccionada.codigo }} - {{ monedaSeleccionada.denominacion
+        }}</strong
+      >
     </ion-label>
   </ion-item>
 
   <!-- Importe -->
   <ion-item>
     <ion-label position="stacked"> Importe </ion-label>
-    <ion-input type="number" [(ngModel)]="importe" [clearOnEdit]="true" placeholder="Ingrese un importe">
+    <ion-input
+      type="number"
+      [(ngModel)]="importe"
+      [clearOnEdit]="true"
+      placeholder="Ingrese un importe"
+    >
     </ion-input>
   </ion-item>
   <!-- Botón -->
@@ -60,11 +74,18 @@
         {{ fechaCotizacion }}
       </p>
       <h2 class="ion-text-center">
-        <strong>TOTAL: </strong> {{ resultado | currency:'ARS':'symbol':'1.2-2' }}
+        <strong>TOTAL: </strong> {{ resultado | currency:'ARS':'symbol':'1.2-2'
+        }}
       </h2>
     </ion-card-content>
   </ion-card>
-  <ion-button *ngIf="resultado > 0" expand="block" color="success" class="ion-margin-top" (click)="shareOnWhatsApp()">
+  <ion-button
+    *ngIf="resultado > 0"
+    expand="block"
+    color="success"
+    class="ion-margin-top"
+    (click)="shareOnWhatsApp()"
+  >
     <ion-icon slot="start" name="logo-whatsapp"></ion-icon>
     Compartir por WhatsApp
   </ion-button>

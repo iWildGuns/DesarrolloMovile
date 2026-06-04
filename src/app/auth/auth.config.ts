@@ -7,7 +7,7 @@ export const authConfig: PassedInitialConfig = {
     redirectUrl: window.location.origin,
     postLogoutRedirectUri: window.location.origin,
     clientId: 'please-enter-clientId',
-    scope: 'please-enter-scopes', // 'openid profile ' + your scopes
+    scope: 'please-enter-scopes',
     responseType: 'code',
     silentRenew: true,
     silentRenewUrl: window.location.origin + '/silent-renew.html',

@@ -1,18 +1,54 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { HttpClientService } from 'src/app/service/http-client';
-import { IDivisas, IResults } from 'src/types';
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonSearchbar,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { logoWhatsapp } from 'ionicons/icons';
+import { HttpClientService } from 'src/app/service/http-client';
+import { IDivisas, IResults } from 'src/types';
 
 @Component({
   selector: 'app-currency-converter',
   templateUrl: './currency-converter.page.html',
   styleUrls: ['./currency-converter.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonCardTitle,
+    IonCardContent,
+    CommonModule,
+    FormsModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonLabel,
+    IonSearchbar,
+    IonList,
+    IonItem,
+    IonInput,
+    IonButton,
+    IonIcon,
+    IonCard,
+    IonCardHeader,
+  ],
 })
 export class CurrencyConverterPage implements OnInit {
   moneda: string = '';
@@ -23,7 +59,6 @@ export class CurrencyConverterPage implements OnInit {
   fechaCotizacion: string = '';
   cotizacionActual: number = 0;
 
-  //buscador de monedas
   monedas?: IDivisas;
   monedasFiltradas: IResults[] = [];
   textoBuscado = '';
@@ -36,6 +71,7 @@ export class CurrencyConverterPage implements OnInit {
   ngOnInit() {
     this.cargarDivisas();
   }
+
   cargarDivisas(): void {
     this.httpClientService.getDivisa().subscribe({
       next: (res: IDivisas) => {
@@ -47,6 +83,7 @@ export class CurrencyConverterPage implements OnInit {
       },
     });
   }
+
   filtrarMonedas(event: any) {
     const texto = event.target.value?.toLowerCase().trim() || '';
     if (!texto) {
@@ -59,8 +96,9 @@ export class CurrencyConverterPage implements OnInit {
         m.codigo?.toLocaleLowerCase().includes(texto),
     );
   }
+
   seleccionarMoneda(moneda: IResults) {
-    this.monedaSeleccionada = moneda; //iresult
+    this.monedaSeleccionada = moneda;
 
     this.textoBuscado = `${moneda.codigo} - ${moneda.denominacion}`;
     if (moneda.codigo) {
@@ -80,6 +118,7 @@ export class CurrencyConverterPage implements OnInit {
       },
     });
   }
+
   formatearFecha(fecha: Date): string {
     const anio = fecha.getFullYear();
 

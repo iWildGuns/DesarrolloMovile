@@ -13,11 +13,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-import {
-  initializeFirestore,
-  provideFirestore,
-  getFirestore,
-} from '@angular/fire/firestore';
+import { initializeFirestore, provideFirestore } from '@angular/fire/firestore';
 import { authConfig } from './auth/auth.config';
 import { provideAuth as provideAuth_alias } from 'angular-auth-oidc-client';
 import { registerLocaleData } from '@angular/common';

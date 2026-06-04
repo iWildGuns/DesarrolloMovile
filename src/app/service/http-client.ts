@@ -54,16 +54,13 @@ export class HttpClientService {
       let nombre = '';
 
       if ('codigoMoneda' in item) {
-        // Si el objeto es de tipo IDivisa
         codigo = item.codigoMoneda || '';
         nombre = item.descripcion || '';
       } else {
-        // Si el objeto es de tipo IResults
         codigo = item.codigo || '';
         nombre = item.denominacion || '';
       }
 
-      // Retorna true si el término coincide con el código o el nombre/descripción
       return (
         codigo.toLowerCase().includes(term) ||
         nombre.toLowerCase().includes(term)
