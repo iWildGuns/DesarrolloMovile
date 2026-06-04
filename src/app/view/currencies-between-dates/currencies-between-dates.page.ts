@@ -9,13 +9,16 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { addIcons } from 'ionicons';
 import { shareSocialOutline } from 'ionicons/icons';
+import { CurrencySymbolPipe } from 'src/app/shared/pipes/currency-symbol-pipe';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-currencies-between-dates',
   templateUrl: './currencies-between-dates.page.html',
   styleUrls: ['./currencies-between-dates.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule],
+  imports: [CommonModule, FormsModule, IonicModule, CurrencySymbolPipe],
 })
 export class CurrenciesBetweenDatesPage implements OnInit {
   divisas: IDivisa[] = [];
@@ -33,17 +36,21 @@ export class CurrenciesBetweenDatesPage implements OnInit {
   fechaHasta: string = '';
   data: any;
   disable: boolean = true;
+  isLoading: boolean = false;
+  errorMessage: string = '';
+
+  private destroy$ = new Subject<void>();
 
   constructor(private httpClientService: HttpClientService) {
     addIcons({ shareSocialOutline });
   }
 
   ngOnInit() {
-    const hoy = new Date();
     const anterior = new Date();
+    const hoy = new Date();
     anterior.setDate(hoy.getDate() - 7);
-    this.fechaHasta = hoy.toISOString().split('T')[0];
     this.fechaDesde = anterior.toISOString().split('T')[0];
+    this.fechaHasta = hoy.toISOString().split('T')[0];
 
     this.httpClientService
       .getCurrenciesBetweenDate(this.moneda, this.fechaDesde, this.fechaHasta)
@@ -55,6 +62,13 @@ export class CurrenciesBetweenDatesPage implements OnInit {
         error: (err) => console.error('ERROR:', err),
       });
   }
+
+  isWeekday = (dateString: string) => {
+    const date = new Date(dateString);
+    const utcDay = date.getUTCDay();
+
+    return utcDay !== 0 && utcDay !== 6;
+  };
 
   validarFechas() {
     if (
@@ -69,23 +83,46 @@ export class CurrenciesBetweenDatesPage implements OnInit {
     }
   }
 
-  buscarCotizaciones() {
+  // buscarCotizaciones() {
+  //   this.httpClientService
+  //     .getCurrenciesBetweenDate(this.moneda, this.fechaDesde, this.fechaHasta)
+  //     .subscribe({
+  //       next: (res) => {
+  //         this.data = res;
+  //         this.disable = false;
+
+  //         // Si el usuario ya está parado en la pestaña del gráfico, lo dibujamos inmediatamente
+  //         if (this.vistaSeleccionada === 'grafico') {
+  //           this.crearGrafico();
+  //         }
+  //       },
+  //       error: (err) => console.error(err),
+  //     });
+  // }
+
+
+  buscarCotizaciones(): void {
+    this.isLoading = true;
     this.httpClientService
       .getCurrenciesBetweenDate(this.moneda, this.fechaDesde, this.fechaHasta)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (res) => {
-          this.data = res;
-          this.disable = false;
-
-          // Si el usuario ya está parado en la pestaña del gráfico, lo dibujamos inmediatamente
-          if (this.vistaSeleccionada === 'grafico') {
-            this.crearGrafico();
-          }
-        },
-        error: (err) => console.error(err),
+        next: (resp) => this.handleCotizacionesResponse(resp),
+        error: () => this.handleError('Error al obtener las cotizaciones'),
       });
   }
 
+  private handleCotizacionesResponse(resp: any): void {
+    this.data = resp;
+    this.disable = false;
+    this.isLoading = false;
+    this.errorMessage = '';
+
+    if (this.vistaSeleccionada === 'grafico') {
+      this.crearGrafico();
+    }
+  }
+  
   // Se ejecuta cada vez que el usuario cambia entre las pestañas Listado y Gráfico
   segmentChanged() {
     if (this.vistaSeleccionada === 'grafico' && this.data) {
@@ -136,27 +173,56 @@ export class CurrenciesBetweenDatesPage implements OnInit {
     });
   }
 
-  cargarDivisas() {
-    this.httpClientService.getDivisa().subscribe({
-      next: (res: IDivisas) => {
-        this.divisas = res.results.map(
-          (item: any): IDivisa => ({
-            id: item.id,
-            codigoMoneda: item.codigo,
-            descripcion: item.denominacion,
-            tipoPase: item.tipoPase,
-            tipoCotizacion: item.tipoCotizacion,
-          }),
-        );
-      },
-      error: (err) => console.error(err),
-    });
+  // cargarDivisas() {
+  //   this.httpClientService.getDivisa().subscribe({
+  //     next: (res: IDivisas) => {
+  //       this.divisas = res.results.map(
+  //         (item: any): IDivisa => ({
+  //           id: item.id,
+  //           codigoMoneda: item.codigo,
+  //           descripcion: item.denominacion,
+  //           tipoPase: item.tipoPase,
+  //           tipoCotizacion: item.tipoCotizacion,
+  //         }),
+  //       );
+  //     },
+  //     error: (err) => console.error(err),
+  //   });
+  // }
+
+   private cargarDivisas(): void {
+    this.httpClientService
+      .getDivisa()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (resp) => this.handleDivisasResponse(resp),
+        error: () => this.handleError('Error al cargar las divisas'),
+      });
+  }
+
+  private handleDivisasResponse(res: IDivisas): void {
+    this.divisas = res.results.map(
+      (item: any): IDivisa => ({
+        id: item.id,
+        codigoMoneda: item.codigo,
+        descripcion: item.denominacion,
+        tipoPase: item.tipoPase,
+        tipoCotizacion: item.tipoCotizacion,
+      }),
+    );
+  }
+
+  private handleError(message: string): void {
+    this.errorMessage = message;
+    this.isLoading = false;
   }
 
   // REFACTORIZADO: Ahora utiliza tu función compartida del servicio
   filterCurrencies(event: any) {
     const value = event.detail.value || '';
 
+    console.log(this.divisas);
+    
     if (!value.trim()) {
       this.filteredDivisas = [];
       this.showResults = false;
@@ -169,6 +235,8 @@ export class CurrenciesBetweenDatesPage implements OnInit {
       value,
     );
     this.showResults = true;
+    console.log(this.filteredDivisas);
+    
   }
 
   seleccionarDivisa(divisa: IDivisa) {

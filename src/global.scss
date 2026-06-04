@@ -36,3 +36,10 @@
 @import "@ionic/angular/css/palettes/dark.class.css";
 /* @import '@ionic/angular/css/palettes/dark.system.css'; */
 
+.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  --background: var(--ion-background-color) !important;
+  opacity: 1 !important;
+}

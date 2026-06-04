@@ -6,13 +6,14 @@ import { HttpClientService } from 'src/app/service/http-client';
 import { IResults, IDivisa, IDivisas } from 'src/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { CurrencySymbolPipe } from 'src/app/shared/pipes/currency-symbol-pipe';
 
 @Component({
   selector: 'app-currency',
   templateUrl: './currency.page.html',
   styleUrls: ['./currency.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, CurrencySymbolPipe],
 })
 export class CurrencyPage implements OnDestroy {
   currencies: IResults[] = [];
@@ -25,9 +26,18 @@ export class CurrencyPage implements OnDestroy {
   selectedDate: string = this.getLocalDate();
   errorMessage: string = '';
 
+  maxDate: string = new Date().toISOString().split('T')[0];
+
   private destroy$ = new Subject<void>();
 
   constructor(private httpService: HttpClientService) {}
+
+  isWeekday = (dateString: string) => {
+    const date = new Date(dateString);
+    const utcDay = date.getUTCDay();
+
+    return utcDay !== 0 && utcDay !== 6;
+  };
 
   ionViewWillEnter(): void {
     this.loadCurrencies();

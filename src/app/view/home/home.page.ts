@@ -23,7 +23,7 @@ export class HomePage implements OnInit {
 
   constructor(
     private favoritesService: FavoritesService,
-    private httpClientService: HttpClientService
+    private httpClientService: HttpClientService,
   ) {}
 
   ngOnInit(): void {
@@ -48,7 +48,7 @@ export class HomePage implements OnInit {
       next: (res: IDivisas) => {
         const cotizacion = res.results[0]?.detalle[0]?.tipoCotizacion || 0;
         const index = this.favoritesCotizaciones.findIndex(
-          (f) => f.codigo === codigo
+          (f) => f.codigo === codigo,
         );
         if (index !== -1) {
           this.favoritesCotizaciones[index].cotizacion = cotizacion;
@@ -58,7 +58,7 @@ export class HomePage implements OnInit {
       error: (err) => {
         console.error(`Error fetching quote for ${codigo}:`, err);
         const index = this.favoritesCotizaciones.findIndex(
-          (f) => f.codigo === codigo
+          (f) => f.codigo === codigo,
         );
         if (index !== -1) {
           this.favoritesCotizaciones[index].loading = false;

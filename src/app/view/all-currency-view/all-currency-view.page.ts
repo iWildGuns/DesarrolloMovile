@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import {
   IonIcon,
   IonCard,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
   IonCardContent,
   IonSearchbar,
   IonContent,
@@ -16,6 +19,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { addIcons } from 'ionicons';
 import { calendarOutline, star, starOutline } from 'ionicons/icons';
+import { CurrencySymbolPipe } from 'src/app/shared/pipes/currency-symbol-pipe';
 
 @Component({
   selector: 'app-all-currency-view',
@@ -26,11 +30,15 @@ import { calendarOutline, star, starOutline } from 'ionicons/icons';
     IonCardContent,
     IonCard,
     IonIcon,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
     CommonModule,
     FormsModule,
     IonSearchbar,
     IonContent,
     IonButton,
+    CurrencySymbolPipe,
   ],
 })
 export class AllCurrencyViewPage implements OnInit, OnDestroy {

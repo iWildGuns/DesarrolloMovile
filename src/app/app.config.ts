@@ -1,4 +1,4 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID } from '@angular/core';
 import {
   RouteReuseStrategy,
   provideRouter,
@@ -17,6 +17,10 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { authConfig } from './auth/auth.config';
 import { provideAuth as provideAuth_alias } from 'angular-auth-oidc-client';
 import { environment } from 'src/environments/environment';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+
+registerLocaleData(localeEs);
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAj9G9OFb1lNUhxW2GJnHs-oE5yPnxWhjE',
@@ -31,6 +35,7 @@ const firebaseConfig = {
 export const appConfig: ApplicationConfig = {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: LOCALE_ID, useValue: 'es' },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(),

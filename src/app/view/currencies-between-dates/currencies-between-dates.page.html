@@ -1,46 +1,35 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Cotizaciones entre dos fechas</ion-title>
+    <ion-title>Evolución de la moneda</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-segment [(ngModel)]="vistaSeleccionada" (ionChange)="segmentChanged()">
-  <ion-segment-button value="lista">
-    <ion-label>Listado</ion-label>
-  </ion-segment-button>
-
-  <ion-segment-button value="grafico">
-    <ion-label>Gráfico</ion-label>
-  </ion-segment-button>
-</ion-segment>
-
 <ion-content class="ion-padding">
+
+  <ion-segment [(ngModel)]="vistaSeleccionada" (ionChange)="segmentChanged()">
+    <ion-segment-button value="lista">
+      <ion-label>Listado</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="grafico">
+      <ion-label>Gráfico</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
   <ion-item lines="none">
-    <ion-searchbar
-      placeholder="Buscar divisa"
-      [(ngModel)]="searchTerm"
-      debounce="300"
-      (ionInput)="filterCurrencies($event)"
-    >
+    <ion-searchbar [animated]="true" placeholder="Buscar divisa" [(ngModel)]="searchTerm" debounce="300"
+      (ionInput)="filterCurrencies($event)">
     </ion-searchbar>
   </ion-item>
 
-  <ion-list
-    *ngIf="showResults"
-    style="
+  <ion-list *ngIf="showResults" style="
       max-height: 200px;
       overflow-y: auto;
       margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 8px;
-    "
-  >
-    <ion-item
-      button
-      *ngFor="let divisa of filteredDivisas"
-      (click)="seleccionarDivisa(divisa)"
-      [color]="divisaSeleccionada?.id === divisa.id ? 'primary' : ''"
-    >
+    ">
+    <ion-item *ngFor="let divisa of filteredDivisas" (click)="seleccionarDivisa(divisa)"
+      [color]="divisaSeleccionada?.id === divisa.id ? 'primary' : ''">
       <ion-label>
         <h2>{{ divisa.codigoMoneda }}</h2>
         <p>{{ divisa.descripcion }}</p>
@@ -48,34 +37,61 @@
     </ion-item>
   </ion-list>
 
-  <ion-item>
+  <!-- <ion-item>
+    <ion-searchbar placeholder="Seleccione moneda" [(ngModel)]="searchTerm" (ionInput)="filterCurrencies($event)">
+    </ion-searchbar>
+  </ion-item>
+
+  <ion-list *ngIf="filteredDivisas.length > 0">
+    <ion-item *ngFor="let moneda of filteredDivisas" (click)="seleccionarDivisa(moneda)">
+      <ion-label>
+        <h2>{{ moneda.codigoMoneda }}</h2>
+        <p>{{ moneda.descripcion }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list> -->
+
+  <!-- <ion-item>
     <ion-label position="stacked">Fecha desde</ion-label>
-    <ion-input
-      type="date"
-      [(ngModel)]="fechaDesde"
-      [max]="fechaHasta || fechaActual"
-      (ionChange)="validarFechas()"
-    >
+    <ion-input class="input-fecha" type="date" [(ngModel)]="fechaDesde" [max]="fechaHasta || fechaActual"
+      (ionChange)="validarFechas()">
     </ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label position="stacked">Fecha hasta</ion-label>
-    <ion-input
-      type="date"
-      [(ngModel)]="fechaHasta"
-      [min]="fechaDesde"
-      [max]="fechaActual"
-      (ionChange)="validarFechas()"
-    >
+    <ion-input class="input-fecha" type="date" [(ngModel)]="fechaHasta" [min]="fechaDesde" [max]="fechaActual"
+      (ionChange)="validarFechas()">
     </ion-input>
+  </ion-item> -->
+
+  <ion-item>
+    <ion-label position="stacked">Fecha desde nueva</ion-label>
+    <ion-input value="{{fechaDesde | date: 'dd/MM/yyyy' }}" id="fecha-input" class="input-fecha"></ion-input>
+
+    <ion-popover trigger="fecha-input" size="cover">
+      <ng-template>
+        <ion-datetime presentation="date" locale="es-AR" [(ngModel)]="fechaDesde" [max]="fechaActual"
+          [isDateEnabled]="isWeekday" (ionChange)="validarFechas()">
+        </ion-datetime>
+      </ng-template>
+    </ion-popover>
   </ion-item>
 
-  <ion-button
-    expand="block"
-    class="ion-margin-top"
-    (click)="buscarCotizaciones()"
-  >
+  <ion-item>
+    <ion-label position="stacked">Fecha hasta nueva</ion-label>
+    <ion-input value="{{fechaHasta | date: 'dd/MM/yyyy' }}" id="fecha-input2" class="input-fecha"></ion-input>
+
+    <ion-popover trigger="fecha-input2" size="cover">
+      <ng-template>
+        <ion-datetime presentation="date" locale="es-AR" [(ngModel)]="fechaHasta" [min]="fechaDesde" [max]="fechaActual"
+          [isDateEnabled]="isWeekday" (ionChange)="validarFechas()">
+        </ion-datetime>
+      </ng-template>
+    </ion-popover>
+  </ion-item>
+
+  <ion-button expand="block" class="ion-margin-top" (click)="buscarCotizaciones()">
     Buscar
   </ion-button>
 
@@ -91,11 +107,9 @@
         <ion-item *ngFor="let d of day.detalle">
           <ion-label>
             <h3>{{ d.codigoMoneda }} - {{ d.descripcion }}</h3>
-            <p>Pase: {{ d.tipoPase }}</p>
-            <p
-              style="font-weight: 500; color: var(--ion-color-success, #2dd36f)"
-            >
-              Cotización: {{ d.tipoCotizacion }}
+            <p>1 {{d.codigoMoneda | currencySymbol}} = {{ d.tipoPase }} AR$</p>
+            <p style="font-weight: 500; color: var(--ion-color-success, #2dd36f)">
+              1 {{d.codigoMoneda | currencySymbol}} = {{ d.tipoCotizacion }} US$
             </p>
           </ion-label>
         </ion-item>
@@ -108,15 +122,8 @@
       <canvas id="miGrafico"></canvas>
     </div>
 
-    <ion-button
-      [disabled]="disable"
-      expand="block"
-      fill="outline"
-      shape="round"
-      color="medium"
-      class="ion-margin-top"
-      (click)="descargarGraficoNativo()"
-    >
+    <ion-button [disabled]="disable" expand="block" fill="outline" shape="round" color="medium" class="ion-margin-top"
+      (click)="descargarGraficoNativo()">
       <ion-icon slot="start" name="share-social-outline"></ion-icon>
       Exportar Gráfico
     </ion-button>

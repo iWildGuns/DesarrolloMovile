@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/service/auth-service';
 import { ThemeService } from 'src/app/service/theme';
 import { addIcons } from 'ionicons';
-import { moon, sunny, gridOutline, restaurantOutline, receiptOutline, fastFoodOutline, cardOutline } from 'ionicons/icons';
+import { logOutOutline, homeOutline, cashOutline, calendarNumberOutline, calculatorOutline, calendarOutline, moon, sunny, gridOutline, restaurantOutline, receiptOutline, fastFoodOutline, cardOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-menu',
@@ -48,11 +48,16 @@ export class MenuComponent {
     private menuController: MenuController,
     private authService: AuthService,
   ) {
-    addIcons({ moon, sunny, 'grid-outline': gridOutline, 'restaurant-outline': restaurantOutline, 'receipt-outline': receiptOutline, 'fast-food-outline': fastFoodOutline, 'card-outline': cardOutline });
+    addIcons({ logOutOutline, homeOutline, cashOutline, calendarNumberOutline, calendarOutline, calculatorOutline, moon, sunny, 'grid-outline': gridOutline, 'restaurant-outline': restaurantOutline, 'receipt-outline': receiptOutline, 'fast-food-outline': fastFoodOutline, 'card-outline': cardOutline });
   }
 
   ngOnInit(): void {
     this.isLoggedIn$ = this.authService.isLoggedIn$;
+  }
+
+  goHome(): void {
+    this.router.navigate(['']);
+    this.cerrarMenu();
   }
 
   navegarADivisas(): void {
