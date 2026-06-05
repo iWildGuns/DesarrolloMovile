@@ -1,23 +1,4 @@
-import {
-  IonLabel,
-  IonDatetime,
-  IonDatetimeButton,
-  IonModal,
-  IonSpinner,
-  IonItem,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonText,
-  IonContent,
-  IonList,
-  IonSearchbar,
-  IonIcon,
-} from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, OnDestroy } from '@angular/core';
@@ -25,40 +6,13 @@ import { HttpClientService } from 'src/app/service/http-client';
 import { IResults, IDivisa, IDivisas } from 'src/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CurrencySymbolPipe } from 'src/app/shared/pipes/currency-symbol-pipe';
-import { addIcons } from 'ionicons';
-import { calendar } from 'ionicons/icons';
-
-addIcons({ calendar });
 
 @Component({
   selector: 'app-currency',
   templateUrl: './currency.page.html',
   styleUrls: ['./currency.page.scss'],
   standalone: true,
-  imports: [
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonItem,
-    IonLabel,
-    IonDatetime,
-    IonDatetimeButton,
-    IonModal,
-    IonSpinner,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
-    IonText,
-    IonContent,
-    IonList,
-    IonSearchbar,
-    IonIcon,
-    CommonModule,
-    FormsModule,
-    CurrencySymbolPipe,
-  ],
+  imports: [IonicModule, CommonModule, FormsModule],
 })
 export class CurrencyPage implements OnDestroy {
   currencies: IResults[] = [];
@@ -71,29 +25,39 @@ export class CurrencyPage implements OnDestroy {
   selectedDate: string = this.getLocalDate();
   errorMessage: string = '';
 
-  maxDate: string = new Date().toISOString().split('T')[0];
-
   private destroy$ = new Subject<void>();
 
-  constructor(private httpService: HttpClientService) {
-    addIcons({ calendar });
-  }
+  /**
+   * Constructor: Inyecta el servicio HTTP para consultar la API de divisas.
+   */
 
-  isWeekday = (dateString: string) => {
-    const date = new Date(dateString);
-    const utcDay = date.getUTCDay();
+  constructor(private httpService: HttpClientService) {}
 
-    return utcDay !== 0 && utcDay !== 6;
-  };
+  /**
+   * @function ionViewWillEnter: Hook de Ionic que se ejecuta cada vez que la vista está por entrar.
+   * Carga la lista de divisas cada vez que se muestra la página.
+   */
 
   ionViewWillEnter(): void {
     this.loadCurrencies();
   }
 
+  /**
+   * @function ngOnDestroy: Se ejecuta al destruir el componente.
+   * Emite una señal y completa el Subject para cancelar todas las suscripciones activas
+   * y evitar pérdidas de memoria.
+   */
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  /**
+   * loadCurrencies: Carga todas las divisas desde el servicio HTTP.
+   * Usa takeUntil con destroy$ para cancelar la suscripción si el componente se destruye antes de recibir la respuesta.
+   * En caso de éxito, llama a handleCurrenciesResponse; en caso de error, muestra mensaje genérico.
+   */
 
   private loadCurrencies(): void {
     this.httpService
@@ -104,6 +68,14 @@ export class CurrencyPage implements OnDestroy {
         error: () => this.handleError('Error al cargar las divisas'),
       });
   }
+
+  /**
+   * @function loadQuotation: Carga la cotización de la moneda seleccionada para la fecha elegida.
+   * Solo se ejecuta si hay una moneda seleccionada.
+   * Activa isLoading para mostrar un spinner.
+   * Formatea la fecha (elimina la parte de hora) antes de enviarla al servicio.
+   * Maneja la respuesta con handleQuotationResponse y en caso de error muestra un mensaje específico.
+   */
 
   private loadQuotation(): void {
     if (!this.selectedCurrency) return;
@@ -144,9 +116,7 @@ export class CurrencyPage implements OnDestroy {
 
   changeDate(event: any): void {
     this.selectedDate = event.detail.value;
-    if (this.selectedCurrency) {
-      this.loadQuotation();
-    }
+    this.loadQuotation();
   }
 
   private getLocalDate(): string {
