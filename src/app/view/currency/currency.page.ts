@@ -1,4 +1,26 @@
-import { IonicModule } from '@ionic/angular';
+import {
+  IonLabel,
+  IonDatetime,
+  IonDatetimeButton,
+  IonModal,
+  IonSpinner,
+  IonItem,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonText,
+  IonContent,
+  IonList,
+  IonSearchbar,
+  IonIcon,
+} from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { calendar } from 'ionicons/icons';
+import { CurrencySymbolPipe } from 'src/app/shared/pipes/currency-symbol-pipe';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, OnDestroy } from '@angular/core';
@@ -12,7 +34,29 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './currency.page.html',
   styleUrls: ['./currency.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonItem,
+    IonLabel,
+    IonDatetime,
+    IonDatetimeButton,
+    IonModal,
+    IonSpinner,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonText,
+    IonContent,
+    IonList,
+    IonSearchbar,
+    IonIcon,
+    CommonModule,
+    FormsModule,
+    CurrencySymbolPipe,
+  ],
 })
 export class CurrencyPage implements OnDestroy {
   currencies: IResults[] = [];
@@ -20,7 +64,7 @@ export class CurrencyPage implements OnDestroy {
   selectedCurrency: IResults | undefined = undefined;
   quotation: IDivisa | undefined = undefined;
   isLoading: boolean = false;
-
+  maxDate: string = new Date().toISOString().split('T')[0];
   searchTerm: string = '';
   selectedDate: string = this.getLocalDate();
   errorMessage: string = '';
@@ -31,7 +75,16 @@ export class CurrencyPage implements OnDestroy {
    * Constructor: Inyecta el servicio HTTP para consultar la API de divisas.
    */
 
-  constructor(private httpService: HttpClientService) {}
+  constructor(private httpService: HttpClientService) {
+    addIcons({ calendar });
+  }
+
+  isWeekday = (dateString: string) => {
+    const date = new Date(dateString);
+    const utcDay = date.getUTCDay();
+
+    return utcDay !== 0 && utcDay !== 6;
+  };
 
   /**
    * @function ionViewWillEnter: Hook de Ionic que se ejecuta cada vez que la vista está por entrar.
