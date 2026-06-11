@@ -28,6 +28,8 @@ export class AuthService {
   private async checkCurrentUser() {
     try {
       await getCurrentUser();
+      const user = getCurrentUser();
+      console.log(user);
       this.loggedIn$.next(true);
     } catch {
       this.loggedIn$.next(false);

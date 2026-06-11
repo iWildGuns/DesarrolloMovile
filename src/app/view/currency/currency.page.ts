@@ -71,10 +71,6 @@ export class CurrencyPage implements OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  /**
-   * Constructor: Inyecta el servicio HTTP para consultar la API de divisas.
-   */
-
   constructor(private httpService: HttpClientService) {
     addIcons({ calendar });
   }
@@ -86,31 +82,13 @@ export class CurrencyPage implements OnDestroy {
     return utcDay !== 0 && utcDay !== 6;
   };
 
-  /**
-   * @function ionViewWillEnter: Hook de Ionic que se ejecuta cada vez que la vista está por entrar.
-   * Carga la lista de divisas cada vez que se muestra la página.
-   */
-
   ionViewWillEnter(): void {
     this.loadCurrencies();
   }
-
-  /**
-   * @function ngOnDestroy: Se ejecuta al destruir el componente.
-   * Emite una señal y completa el Subject para cancelar todas las suscripciones activas
-   * y evitar pérdidas de memoria.
-   */
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
-  /**
-   * loadCurrencies: Carga todas las divisas desde el servicio HTTP.
-   * Usa takeUntil con destroy$ para cancelar la suscripción si el componente se destruye antes de recibir la respuesta.
-   * En caso de éxito, llama a handleCurrenciesResponse; en caso de error, muestra mensaje genérico.
-   */
 
   private loadCurrencies(): void {
     this.httpService
@@ -121,14 +99,6 @@ export class CurrencyPage implements OnDestroy {
         error: () => this.handleError('Error al cargar las divisas'),
       });
   }
-
-  /**
-   * @function loadQuotation: Carga la cotización de la moneda seleccionada para la fecha elegida.
-   * Solo se ejecuta si hay una moneda seleccionada.
-   * Activa isLoading para mostrar un spinner.
-   * Formatea la fecha (elimina la parte de hora) antes de enviarla al servicio.
-   * Maneja la respuesta con handleQuotationResponse y en caso de error muestra un mensaje específico.
-   */
 
   private loadQuotation(): void {
     if (!this.selectedCurrency) return;

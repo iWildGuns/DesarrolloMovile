@@ -27,6 +27,7 @@ export class FavoritesService {
   private async getCurrentUserId(): Promise<string> {
     try {
       const user = await getCurrentUser();
+      console.log(user.username);
       return user.userId;
     } catch (error) {
       console.warn('No user authenticated:', error);

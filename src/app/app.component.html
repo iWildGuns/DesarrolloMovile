@@ -1,7 +1,7 @@
 <ion-content>
   <h1 class="logo-title">CotizApp</h1>
   <div style="margin-top: 50px">
-    <amplify-authenticator>
+    <amplify-authenticator [formFields]="formFields">
       <ion-app>
         <app-menu menuId="main-menu" contentId="main-content"></app-menu>
         <ion-router-outlet id="main-content"></ion-router-outlet>

@@ -1,15 +1,14 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { IonApp, IonRouterOutlet, IonContent } from '@ionic/angular/standalone';
-import { MenuComponent } from './components/menu/menu.component';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   AmplifyAuthenticatorModule,
   translations,
 } from '@aws-amplify/ui-angular';
-import { AuthService } from './service/auth-service';
-import { Observable } from 'rxjs';
+import { IonApp, IonContent, IonRouterOutlet } from '@ionic/angular/standalone';
 import { I18n } from 'aws-amplify/utils';
-import { Router } from '@angular/router';
-import { ThemeService } from './service/theme';
+import { Observable } from 'rxjs';
+import { MenuComponent } from './components/menu/menu.component';
+import { AuthService } from './service/auth-service';
 
 @Component({
   selector: 'app-root',
@@ -26,11 +25,23 @@ import { ThemeService } from './service/theme';
 })
 export class AppComponent implements OnInit {
   public isLoggedIn$!: Observable<boolean>;
-  title = 'My Cognito App';
+
   constructor(
     private authService: AuthService,
     private router: Router,
   ) {}
+
+  formFields = {
+    signUp: {
+      user: {
+        type: 'nombre',
+        label: 'Nombre de usuario',
+        placeholder: 'Ingrese su Nombre De Usuario',
+        isRequired: true,
+        order: 4,
+      },
+    },
+  };
 
   ngOnInit(): void {
     this.isLoggedIn$ = this.authService.isLoggedIn$;
@@ -44,7 +55,7 @@ export class AppComponent implements OnInit {
       'Enter your Password': 'Ingrese su Contraseña',
       'Sign In': 'Iniciar Sesión',
       'Sign Up': 'Registrarse',
-      'Email': 'Correo Electrónico',
+      Email: 'Correo Electrónico',
       'Username should be an email.':
         'El nombre de usuario debe ser un correo electrónico.',
     });

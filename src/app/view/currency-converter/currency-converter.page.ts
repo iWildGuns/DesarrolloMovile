@@ -64,28 +64,14 @@ export class CurrencyConverterPage implements OnInit {
   textoBuscado = '';
   monedaSeleccionada?: IResults;
 
-  /**
-   * Constructor: Inyecta el servicio HTTP personalizado para llamadas a la API.
-   * Registra el ícono de WhatsApp para poder usarlo en la vista.
-   */
   constructor(public httpClientService: HttpClientService) {
     addIcons({ logoWhatsapp });
   }
-
-  /**
-   * ngOnInit: Se ejecuta al inicializar el componente.
-   * Carga la lista de todas las divisas disponibles al arrancar la página.
-   */
 
   ngOnInit() {
     this.cargarDivisas();
   }
 
-  /**
-   * cargarDivisas: Obtiene todas las divisas desde el servicio HTTP.
-   * Asigna el resultado a 'monedas' y extrae el array 'results' a 'divisas'.
-   * En caso de error, lo imprime en consola.
-   */
   cargarDivisas(): void {
     this.httpClientService.getDivisa().subscribe({
       next: (res: IDivisas) => {
@@ -98,15 +84,6 @@ export class CurrencyConverterPage implements OnInit {
     });
   }
 
-  /**
-   * filtrarMonedas: Filtra la lista de divisas según el texto ingresado en un campo de búsqueda.
-   * @param event - Evento del input (contiene el valor buscado).
-   *
-   * Lógica:
-   * - Si no hay texto, limpia la lista filtrada.
-   * - Si hay texto, busca coincidencias (case-insensitive) en 'denominacion' o 'codigo'
-   *   y guarda los resultados en 'monedasFiltradas' para mostrarlos en un dropdown.
-   */
   filtrarMonedas(event: any) {
     const texto = event.target.value?.toLowerCase().trim() || '';
     if (!texto) {
@@ -120,17 +97,6 @@ export class CurrencyConverterPage implements OnInit {
     );
   }
 
-  /**
-   * @function seleccionarMoneda: Maneja la selección de una moneda desde la lista filtrada.
-   * @param moneda - Objeto IResults (contiene código, denominación, fecha, detalle).
-   *
-   * Acciones:
-   * - Guarda la moneda seleccionada en 'monedaSeleccionada'.
-   * - Muestra en el input de búsqueda el formato "código - denominación".
-   * - Asigna el código de moneda a 'moneda' (para usarlo en la conversión).
-   * - Limpia la lista filtrada para cerrar el dropdown.
-   */
-
   seleccionarMoneda(moneda: IResults) {
     this.monedaSeleccionada = moneda;
 
@@ -142,18 +108,6 @@ export class CurrencyConverterPage implements OnInit {
     this.monedasFiltradas = [];
   }
 
-  /**
-   * @function convertir: Realiza la conversión de moneda usando la última cotización disponible.
-   *
-   *
-   * Flujo:
-   * 1. Llama al servicio para obtener la última cotización de la moneda seleccionada.
-   * 2. Extrae el primer resultado (se asume que es el más reciente).
-   * 3. Obtiene 'tipoCotizacion' como tasa de cambio.
-   * 4. Guarda la fecha de la cotización.
-   * 5. Calcula: resultado = importe * cotización actual.
-   * @returns void
-   */
   convertir(): void {
     this.httpClientService.getLastCurrencyQuote(this.moneda).subscribe({
       next: (res) => {
@@ -166,13 +120,6 @@ export class CurrencyConverterPage implements OnInit {
     });
   }
 
-  /**
-   * formatearFecha: Convierte un objeto Date a string en formato YYYY-MM-DD.
-   * @param fecha - Fecha a formatear.
-   * @returns String con formato 'aaaa-mm-dd' (ej. '2025-03-27').
-   *
-   * Nota: Se usa padStart(2,'0') para mantener dos dígitos en mes y día.
-   */
   formatearFecha(fecha: Date): string {
     const anio = fecha.getFullYear();
 
@@ -182,22 +129,6 @@ export class CurrencyConverterPage implements OnInit {
 
     return `${anio}-${mes}-${dia}`;
   }
-
-  /**
-   * shareOnWhatsApp: Comparte el resultado de la conversión por WhatsApp.
-   *
-   * Validaciones:
-   * - Si no hay resultado, importe o moneda seleccionada, no hace nada.
-   *
-   * Construye un mensaje con:
-   * - Monto base
-   * - Moneda seleccionada (código + denominación)
-   * - Resultado convertido a ARS
-   * - Tasa de cambio usada
-   * - Fecha de la cotización
-   *
-   * Luego abre WhatsApp Web (o la app en móvil) con el mensaje preescrito.
-   */
 
   shareOnWhatsApp() {
     if (this.resultado === 0 || !this.importe || !this.monedaSeleccionada) {
